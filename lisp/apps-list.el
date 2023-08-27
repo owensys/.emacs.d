@@ -1,0 +1,5 @@
+(("notepad" . "D:\\emacs_env\\Notepad2.exe")
+ ("calc" . "C:\\Windows\\SysWOW64\\calc.exe")
+ ("控制面板" . "C:\\Windows\\SysWOW64\\control.exe")
+ ("hash-calc" . "D:\\Installed\\HashCalc\\HashCalc.exe")
+ )
