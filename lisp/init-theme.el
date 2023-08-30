@@ -22,14 +22,17 @@
 (advice-add 'load-theme :around #'load-theme-hook-wrapper)
 
 (defun eye-after-load-theme-setup (theme)
-  ;; 设置注释颜色
-  (if (eq 'doom-nord-light theme)
-      (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
-    (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
-    )
-  )
-;; (add-hook 'load-theme-after-hook #'eye-after-load-theme-setup)
-
+  (message "setup after load theme")
+  ;; (set-face-attribute 'mode-line nil :background (face-attribute 'default :background))
+  (if (eye-current-theme-is-dark)
+      (progn
+        (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
+        (set-face-attribute 'header-line nil :height 160 :background "#051e59" :foreground "gray60")) ;; dark #003045
+    (progn
+      (set-face-attribute 'font-lock-comment-face nil :foreground "dark red")
+      (set-face-attribute 'header-line nil :height 160 :background "#f3e0d5" :foreground "gray36"))
+    ))
+(add-hook 'load-theme-after-hook #'eye-after-load-theme-setup)
 
 (require 'init-modeline) ;; 先加载modeline配置，如果放到load theme之后，modeline会没有背景颜色
 

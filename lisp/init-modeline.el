@@ -72,7 +72,8 @@
      (setq-default mode-line-format "")
 
      ;; 激活模块
-     (setq awesome-tray-active-modules '("ro" "buffer-name" "encode" "mode-name"))
+     ;; (setq awesome-tray-active-modules '("ro" "buffer-name" "encode" "mode-name"))
+     (setq awesome-tray-active-modules nil) ;; display nothing
 
      ;; Enable awesome-tray-mode
      (defun eye--activate-awesome-tray (theme)

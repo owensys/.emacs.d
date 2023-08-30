@@ -1586,4 +1586,8 @@ the `format' call in a list."
     )
   )
 
+(defun eye-current-theme-is-dark ()
+  (equal (frame-parameter nil 'background-mode) 'dark)
+  )
+
 (provide 'init-utils)
