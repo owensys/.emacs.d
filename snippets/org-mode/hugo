@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: hugo
+# key: hugo
+# --
+#+hugo_base_dir: e:/home/Dropbox/hugo-blog/myblog
+#+hugo_auto_set_lastmod: nil
+#+hugo_custom_front_matter: :author "owen" :slug $1
+#+hugo_custom_front_matter: :summary "$2"
+#+hugo_custom_front_matter: :featuredImage "./images/featured-image.png"
+#+hugo_custom_front_matter: :featuredImagePreview "./images/featured-image.png"
+#+hugo_tags: $3
+#+hugo_categories:
+#+options: \\n:t

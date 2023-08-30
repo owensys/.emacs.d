@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: ul
+# key: ul
+# --
+<ul>
+<li><a href="about.html" target="content">关于我们</a></li>
+<li class="menuLine"></li>
+<li><a href="product.html" target="content">产品</a></li>
+<li class="menuLine"></li>
+<li><a href="feedback.html" target="content">反馈</a></li>
+<li class="menuLine"></li>
+<li><a href="news.html" target="content">新闻</a></li>
+<li class="menuLine"></li>
+<li><a href="login.html" target="content">登录/注册</a></li>
+</ul>

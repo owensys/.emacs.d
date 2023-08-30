@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: comment-function
+# key: /**f
+# --
+/**
+* $1
+*
+* $2
+*
+* @param[in] arg1 desc
+* @param[out] arg2 desc
+* @retval bool desc
+*/
