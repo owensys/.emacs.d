@@ -156,10 +156,10 @@
   (eye-bind-ctrl-key modemap "wfq" 'other-frame)
   (wkey "C-w C-f" "frame")
 
-  ;; (eye-bind-ctrl-key modemap "wtn" 'tab-new)
-  ;; (eye-bind-ctrl-key modemap "wtc" 'tab-close)
-  ;; (eye-bind-ctrl-key modemap "wtr" 'tab-rename)
-  ;; (eye-bind-ctrl-key modemap "wts" 'tab-bar-select-tab-by-name)
+  (eye-bind-ctrl-key modemap "wtn" 'tab-new)
+  (eye-bind-ctrl-key modemap "wtc" 'tab-close)
+  (eye-bind-ctrl-key modemap "wtr" 'tab-rename)
+  (eye-bind-ctrl-key modemap "wts" 'tab-bar-select-tab-by-name)
   ;; (wkey "C-w C-t" "tab")
 
   (eye-bind-ctrl-key modemap "tt" 'centaur-tabs-mode)
@@ -353,9 +353,14 @@
 (bind-key messages-buffer-mode-map "C-k C-k" #'clear-messages-buffer)
 
 ;; tab
-(global-set-key (kbd "<C-prior>") 'centaur-tabs-backward) ;; C- page up
-(global-set-key (kbd "<C-next>") 'centaur-tabs-forward) ;; C- page down
-(global-set-key (kbd "<C-S-next>") 'centaur-tabs-counsel-switch-group) ;; C- page down
+;; (global-set-key (kbd "<C-prior>") 'centaur-tabs-backward) ;; C- page up
+;; (global-set-key (kbd "<C-next>") 'centaur-tabs-forward) ;; C- page down
+;; (global-set-key (kbd "<C-S-next>") 'centaur-tabs-counsel-switch-group) ;; C- page down
+
+(global-set-key (kbd "<C-prior>") 'tab-previous) ;; C- page up
+(global-set-key (kbd "<C-next>") 'tab-next) ;; C- page down
+(global-set-key (kbd "<C-S-next>") 'tab-bar-select-tab-by-name) ;; C- page down
+
 ;; (global-set-key (kbd "<C-insert>") 'emms-stop) ;; C- insert
 
 ;; menu

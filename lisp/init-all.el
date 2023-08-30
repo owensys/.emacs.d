@@ -438,7 +438,7 @@
    (setq centaur-tabs-set-icons t)
    (setq centaur-tabs-set-bar 'over)
    (setq centaur-tabs-cycle-scope 'tabs)
-   (centaur-tabs-mode t)
+   ;; (centaur-tabs-mode t)
    ))
 
 ;;;; theme
