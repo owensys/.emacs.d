@@ -165,6 +165,8 @@
   (if is-windows
       (w32-send-sys-command 61488)))
 
+(add-hook 'after-init-hook #'maximize-frame)
+
 (defun fullscreen-toggle ()
   "Toggle fullscreen/maximize status."
   (interactive)
