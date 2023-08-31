@@ -57,7 +57,6 @@
 ;;;; swiper counsel ivy
 (eye/use-package
  'swiper
- :ensure t
  :load-path "swiper"
  :command '((counsel-org-goto . "counsel")
             (counsel-M-x . "counsel")
@@ -107,12 +106,13 @@
 ;;;; ivy-posframe
 (eye/use-package
  'ivy-posframe
- :ensure t
  :load-path '("ivy-posframe" "posframe")
+ :command '(ivy-posframe-mode)
  :config
  (progn
    ;; (setq ivy-posframe-height nil) ;; 高度
-   (setq ivy-posframe-border-width 3)
+   (setq ivy-posframe-border-width 1)
+   (set-face-attribute 'ivy-posframe-border nil :background "dark red")
    ;; (setq ivy-height 10) ;;ivy-posframe-height) ;; 把ivy-height设置成和ivy-posframe-height一样的高度可以让列表占满整个高度
    ;; display at `ivy-posframe-style'
    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
@@ -128,11 +128,10 @@
 ;; M-x 记录历史必须用
 (eye/use-package
  'smex
- :ensure t
  :load-path "smex"
+ :command '(smex)
  :config
  (progn
-   (require 'smex)
    ;; modify smex so that typing a space will insert a hyphen ‘-’ like in normal M-x
    ;; @see https://www.emacswiki.org/emacs/Smex
    (defadvice smex (around space-inserts-hyphen activate compile)
@@ -162,8 +161,7 @@
 (eye/use-package
  'color-rg
  :load-path "color-rg"
- :ensure t
- :command '(color-rg-search-input)
+ :command '(color-rg-read-input color-rg-search-input)
  :config
  (progn
    (set-face-attribute 'color-rg-font-lock-match nil :foreground "dark green")
@@ -182,7 +180,6 @@
 (eye/use-package
  'bm
  :load-path "bm"
- :ensure t
  :command '(bm-toggle bm-next bm-previous)
  :init
  (progn
@@ -220,11 +217,11 @@
 ;;;; ctrlf
 (eye/use-package
  'ctrlf
- :ensure t
  :load-path "ctrlf"
+ :command '(ctrlf-forward-default)
  :config
  (progn
-   (ctrlf-mode +1)))
+   (ctrlf-mode t)))
 
 
 ;;;; super-save
@@ -242,20 +239,21 @@
 
 ;;;; eno
 ;; similar package, https://github.com/lyjdwh/avy-thing-edit
-(eye/use-package 'eno
-	             :load-path '("eno" "dash" "edit-at-point")
-	             :command '(eno-word-copy eno-word-copy-in-line eno-line-copy)
-	             :config
-	             (progn
-		           (defun eye/eno-copy ()
-		             (interactive)
-		             (cond
-		              ((equal major-mode 'c++-mode)
-		               (eno-word-copy))
-		              ((or (equal major-mode 'emacs-lisp-mode) (equal major-mode 'lisp-interaction-mode))
-		               (eno-symbol-copy))
-		              (t (eno-word-copy))))
-		           ))
+(eye/use-package
+ 'eno
+ :load-path '("eno" "dash" "edit-at-point")
+ :command '(eno-word-copy eno-word-copy-in-line eno-line-copy)
+ :config
+ (progn
+   (defun eye/eno-copy ()
+     (interactive)
+     (cond
+      ((equal major-mode 'c++-mode)
+       (eno-word-copy))
+      ((or (equal major-mode 'emacs-lisp-mode) (equal major-mode 'lisp-interaction-mode))
+       (eno-symbol-copy))
+      (t (eno-word-copy))))
+   ))
 
 
 
@@ -271,6 +269,7 @@
          '("\\*Messages\\*"
            "Output\\*$"
            "\\*Async Shell Command\\*"
+           "\\*color-rg\\*"
            help-mode
            compilation-mode))
    )
@@ -285,21 +284,22 @@
    )
  )
 
-(require 'long-line)
+;; (require 'long-line)
 
 ;;;; markdown-mode
 (eye/use-package
  'markdown-mode
- :ensure t
  :load-path "markdown-mode"
+ :command '(markdown-mode)
+ :init (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
  )
 
 
 ;;;; lsp-bridge
 (eye/use-package
  'lsp-bridge
- :ensure t
  :load-path '("posframe" "markdown-mode" "yasnippet" "lsp-bridge")
+ :command '(lsp-bridge-mode global-lsp-bridge-mode)
  :config
  (progn
    (require 'yasnippet)
@@ -318,7 +318,7 @@
 ;;;; cmake-mode
 (eye/use-package
  'cmake-mode
- :ensure nil
+ :load-path "cmake-mode"
  :command '(cmake-mode)
  :init
  (progn
@@ -360,6 +360,7 @@
 (eye/use-package
  'rainbow-delimiters
  :load-path "rainbow-delimiters"
+ :command '(rainbow-delimiters-mode)
  :config
  (progn
    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))

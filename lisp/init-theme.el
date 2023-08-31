@@ -36,23 +36,28 @@
 
 (require 'init-modeline) ;; 先加载modeline配置，如果放到load theme之后，modeline会没有背景颜色
 
-
 (eye/use-package
  'ef-themes
- :ensure t
  :load-path '("ef-themes")
+ :command '(ef-themes-select ef-themes-toggle)
+ :init
+ (progn
+   (add-to-list 'custom-theme-load-path (concat eye-packages-dir "/ef-themes"))
+   (defun eye-load-startup-theme ()
+     (if is-gui
+         (let* ((hh (string-to-int (format-time-string "%H" (current-time)))))
+           (if (or (>= hh 17) (<= hh 6))
+               (load-theme 'ef-winter t)
+             (load-theme 'ef-spring t)
+             ))
+       (load-theme 'wombat t))
+     )
+   ;; (run-with-idle-timer 2 nil #'eye-load-startup-theme)
+   (add-hook 'after-init-hook #'eye-load-startup-theme)
+   )
  :config
  (progn
    (setq ef-themes-to-toggle '(ef-spring ef-winter))
-
-   ;;
-   (if is-gui
-       (let* ((hh (string-to-int (format-time-string "%H" (current-time)))))
-         (if (or (>= hh 17) (<= hh 6))
-             (load-theme 'ef-winter t)
-           (load-theme 'ef-spring t)
-           ))
-     (load-theme 'wombat t))
 
    (setq current-theme 'ef-spring)
    (defun eye/switch-theme ()

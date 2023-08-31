@@ -17,6 +17,7 @@
 (defun eye-mode-line-setup (&optional theme)
   (setq-default mode-line-format "")
   (set-face-attribute 'mode-line nil :height 0.1 :background "dark red")
+  (set-face-attribute 'mode-line-inactive nil :height 0.1)
   )
 
 (add-hook 'after-init-hook #'eye-mode-line-setup)

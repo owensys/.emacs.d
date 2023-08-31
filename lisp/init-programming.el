@@ -223,13 +223,14 @@ If buffer-or-name is nil return current buffer's mode."
 
 ;; 仅对编辑过的行做行尾空白删除：https://emacs-china.org/t/topic/15870
 ;; 很有用的package.
-(eye/use-package 'ws-butler
-                 :ensure t
-                 :load-path "ws-butler"
-                 :config
-                 (progn                   
-                   (add-hook 'prog-mode-hook #'ws-butler-mode)
-                   ))
+(eye/use-package
+ 'ws-butler
+ :load-path "ws-butler"
+ :command '(ws-butler-mode)
+ :config
+ (progn
+   (add-hook 'prog-mode-hook #'ws-butler-mode)
+   ))
 
 
 (defun setup-java-mode()
@@ -308,19 +309,25 @@ If buffer-or-name is nil return current buffer's mode."
 (require 'init-rst)
 
 ;;;; go
-(eye/use-package 'go-mode
-                 :ensure t
-                 :load-path '("go-mode")
-                 :config
-                 (progn
-                   (add-hook 'go-mode-hook
-                             (lambda ()
-                               (setq-default)
-                               (setq tab-width 4)
-                               (setq standard-indent 4)
-                               (setq indent-tabs-mode nil)))
-                   )
-                 )
+(eye/use-package
+ 'go-mode
+ :load-path '("go-mode")
+ :init
+ (progn
+   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
+ :command '(go-mode)
+ :config
+ (progn
+   (defun eye-go-mode-setup ()
+     (setq-default)
+     (setq tab-width 4)
+     (setq standard-indent 4)
+     (setq indent-tabs-mode nil)
+     )
+   (if (equal major-mode 'go-mode) (eye-go-mode-setup))
+   (add-hook 'go-mode-hook #'eye-go-mode-setup)
+   )
+ )
 
 
 (provide 'init-programming)

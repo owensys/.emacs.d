@@ -1,3 +1,4 @@
+(require 'comint)
 
 (setq so-long-threshold 2048)
 
