@@ -58,7 +58,8 @@
 (eye/use-package
  'swiper
  :load-path "swiper"
- :command '((counsel-org-goto . "counsel")
+ :command '((ivy-read . "ivy")
+            (counsel-org-goto . "counsel")
             (counsel-M-x . "counsel")
             (counsel-find-file . "counsel")
             (counsel-buffer-or-recentf . "counsel")
@@ -202,10 +203,15 @@
   (eye/use-package
    'good-scroll
    :load-path '("good-scroll")
-   :ensure t
+   :command '(good-scroll-mode
+              good-scroll-up-full-screen
+              good-scroll-down-full-screen)
+   :init
+   (progn
+     (run-with-idle-timer 1 nil (lambda ()
+                                  (good-scroll-mode t))))
    :config
    (progn
-     (good-scroll-mode 1)
      ;; 绑定上下翻页键也支持像素滚动
      (global-set-key [next] #'good-scroll-up-full-screen)
      (global-set-key [prior] #'good-scroll-down-full-screen)
@@ -227,14 +233,14 @@
 ;;;; super-save
 (eye/use-package
  'super-save
- :ensure t
  :load-path "super-save"
- :config
+ :command '(super-save-mode)
+ :init
  (progn
-   (setq auto-save-default nil)
-   (super-save-mode +1)
-   )
- )
+   (run-with-idle-timer 1 nil (lambda ()
+                                (setq auto-save-default nil)
+                                (super-save-mode t)))
+   ))
 
 
 ;;;; eno
@@ -260,9 +266,8 @@
 ;;;; popper
 (eye/use-package
  'popper
- :ensure t
  :load-path "popper"
- :command '(popper-toggle-latest popper-cycle popper-toggle-type)
+ :command '(popper-mode popper-toggle-latest popper-cycle popper-toggle-type)
  :init
  (progn
    (setq popper-reference-buffers

@@ -33,7 +33,7 @@
 (set-face-attribute 'bm-persistent-face nil :foreground "white" :background "#006FE0")
 
 
-(require 'ivy)
+;; (require 'ivy)
 (require 'dash)
 
 ;; 样式：在fringe上显示

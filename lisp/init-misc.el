@@ -218,11 +218,6 @@
   )
 
 
-
-
-(setq default-directory user-emacs-directory)
-
-
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward) ;; 同名文件区分显示
 
@@ -230,6 +225,7 @@
 ;; 向右移动时，当对当前行起作用
 (setq auto-hscroll-mode 'current-line)
 
+(setq default-directory user-emacs-directory)
 
 ;; 自动保存书签
 (require 'bookmark)
