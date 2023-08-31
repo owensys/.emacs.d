@@ -7,8 +7,8 @@
                   (:eval (if buffer-read-only "🔒")) ;; readonly state
                   "%n" ;; narrow state
                   ;;" %I "
-                  (:eval (format " %s " buffer-file-coding-system))
-                  (:eval (format " %s " major-mode)
+                  (:eval (format " %s  " buffer-file-coding-system))
+                  (:eval (string-replace "-mode" "" (format "%s" major-mode))
                          ;;"%-"
                          )
                   ))
