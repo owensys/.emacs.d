@@ -297,12 +297,12 @@ If buffer-or-name is nil return current buffer's mode."
 
 
 
-;;;; json
-(eye/use-package 'json-mode
-                 :ensure t
-                 :load-path '("json-snatcher" "json-mode")
-                 :command '(json-mode)
-                 )
+;; ;;;; json
+;; (eye/use-package 'json-mode
+;;                  :ensure t
+;;                  :load-path '("json-snatcher" "json-mode")
+;;                  :command '(json-mode)
+;;                  )
 
 
 (require 'init-rst)

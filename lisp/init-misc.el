@@ -124,20 +124,6 @@
 ;;         "%n"))
 (setq frame-title-format "EMS")
 
-;;;; header-line
-(setq-default header-line-format
-      '(" "
-        (:eval (if buffer-file-name (buffer-file-name) "%b")) ;; buffer name or file path
-        " "
-        (:eval (if buffer-read-only "🔒")) ;; readonly state
-        "%n" ;; narrow state
-        ;;" %I "
-        (:eval (format " %s " buffer-file-coding-system))
-        (:eval (format " %s " major-mode)
-        ;;"%-"
-        )
-      )
-
 
 
 ;; 去掉窗口边缘和分割窗口时分割条的边缘

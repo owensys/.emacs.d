@@ -113,7 +113,7 @@
  (progn
    ;; (setq ivy-posframe-height nil) ;; 高度
    (setq ivy-posframe-border-width 3)
-   (setq ivy-height 10) ;;ivy-posframe-height) ;; 把ivy-height设置成和ivy-posframe-height一样的高度可以让列表占满整个高度
+   ;; (setq ivy-height 10) ;;ivy-posframe-height) ;; 把ivy-height设置成和ivy-posframe-height一样的高度可以让列表占满整个高度
    ;; display at `ivy-posframe-style'
    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
    ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
@@ -239,10 +239,10 @@
    )
  )
 
+
 ;;;; eno
 ;; similar package, https://github.com/lyjdwh/avy-thing-edit
 (eye/use-package 'eno
-                 :ensure t
 	             :load-path '("eno" "dash" "edit-at-point")
 	             :command '(eno-word-copy eno-word-copy-in-line eno-line-copy)
 	             :config
@@ -256,6 +256,7 @@
 		               (eno-symbol-copy))
 		              (t (eno-word-copy))))
 		           ))
+
 
 
 ;;;; popper
@@ -326,12 +327,12 @@
    (let ((cmake-el-dir (concat user-emacs-directory "site-lisp/cmake-mode")))
      (add-to-list 'load-path cmake-el-dir)
      (autoload 'cmake-mode "cmake-mode")
-   )))
+     )))
+
 
 ;;;; symbol-overlay
 (eye/use-package
  'symbol-overlay
- :ensure t
  :load-path "symbol-overlay"
  :command '(symbol-overlay-mode symbol-overlay-put)
  :config
@@ -354,37 +355,12 @@
    )
  )
 
-;; ;;;; sort-tab
-;; (eye/use-package
-;;  'sort-tab
-;;  :ensure nil
-;;  :load-path "sort-tab"
-;;  :config
-;;  (progn
-;;    (require 'sort-tab)
-;;    (sort-tab-mode 1)
-;;    ))
-
-;;;; global-readonly
-(eye/use-package
- 'global-readonly-mode
- :ensure t
- :load-path "global-readonly"
- :command 'global-readonly-toggle
- :init
- (progn
-   (setq global-readonly-disable-mouse nil)
-   ))
-
-
 ;;;; rainbow-delimiters
 ;; 括号高亮
 (eye/use-package
  'rainbow-delimiters
- :ensure t
  :load-path "rainbow-delimiters"
- :command 'rainbow-delimiters-mode
- :init
+ :config
  (progn
    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
 
@@ -402,14 +378,12 @@
 
 ;;;; orgmode
 ;; idle load
-
-;; (run-with-idle-timer 2 nil
-;;                      (lambda ()
 (require 'init-programming)
 (require 'init-cpp)
-(require 'init-tramp)
-(require 'init-magit)
-(require 'init-treemacs)
+
+(run-with-idle-timer 2 nil (lambda () (require 'init-tramp)))
+(run-with-idle-timer 2 nil (lambda () (require 'init-magit)))
+;; (require 'init-treemacs)
 
 ;; (require 'init-org)
 ;;(require 'init-session)
@@ -427,19 +401,6 @@
  'bing-dict
  :load-path "bing-dict"
  :command 'bing-dict-brief)
-
-(eye/use-package
- 'centaur-tabs ;; depends powerline
- :load-path '("powerline" "centaur-tabs")
- :config
- (progn
-   (setq centaur-tabs-style "bar")
-   (setq centaur-tabs-height 32)
-   (setq centaur-tabs-set-icons t)
-   (setq centaur-tabs-set-bar 'over)
-   (setq centaur-tabs-cycle-scope 'tabs)
-   ;; (centaur-tabs-mode t)
-   ))
 
 ;;;; theme
 (require 'init-theme)
