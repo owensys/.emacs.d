@@ -136,7 +136,7 @@
         (:eval (format " %s " major-mode)
         ;;"%-"
         )
-      )
+      ))
 
 
 
