@@ -1,17 +1,28 @@
+;; write a function to do the spacing
+(defun simple-mode-line-render (left right)
+  "Return a string of `window-width' length containing LEFT, and RIGHT
+ aligned respectively."
+  (let* ((right-space 50) ;; 右侧可用空间宽度
+         (available-width (- (window-width) (length left) right-space)))
+    ;; 第一层format 产生"%s %50s"
+    (format (format " %%s %%%ds " available-width) left right)))
+
+
  ;;;; header-line
 (defun eye-header-line-setup(&optional theme)
   (setq-default header-line-format
-                '(" "
-                  (:eval (if buffer-file-name (buffer-file-name) "%b")) ;; buffer name or file path
-                  " "
-                  (:eval (if buffer-read-only "🔒")) ;; readonly state
-                  "%n" ;; narrow state
-                  ;;" %I "
-                  (:eval (format " %s  " buffer-file-coding-system))
-                  (:eval (string-replace "-mode" "" (format "%s" major-mode))
-                         ;;"%-"
-                         )
-                  ))
+                '((:eval (simple-mode-line-render
+                          ;; left
+                          (format-mode-line (concat (if buffer-file-name (buffer-file-name) "%b")
+                                                    " "
+                                                    (if buffer-read-only "🔒")
+                                                    ))
+                          ;; right
+                          (format-mode-line (concat (format "%s  " buffer-file-coding-system)
+                                                    (string-replace "-mode" "" (format "%s" major-mode))
+                                                    ""
+                                                    ))
+                          ))))
   )
 
 (defun eye-mode-line-setup (&optional theme)
