@@ -303,7 +303,7 @@
 ;;;; lsp-bridge
 (eye/use-package
  'lsp-bridge
- :load-path '("posframe" "markdown-mode" "yasnippet" "lsp-bridge")
+ :load-path '("lsp-bridge" "posframe" "markdown-mode" "yasnippet")
  :command '(lsp-bridge-mode global-lsp-bridge-mode)
  :config
  (progn
