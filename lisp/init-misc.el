@@ -1,17 +1,20 @@
-(global-auto-revert-mode 1)
-
-(show-paren-mode 1) ;;高亮匹配的括号
+(defun eye-starup-mode-setup ()
+  (global-auto-revert-mode t)
+  ;; (show-paren-mode t) ;;高亮匹配的括号
+  ;; (electric-pair-mode t) ;;自动输出成对括号
+  (delete-selection-mode t)
+  (global-visual-line-mode t)
+  ;; (global-hl-line-mode t)
+  )
+(run-with-idle-timer 1 nil #'eye-starup-mode-setup)
 
 (setq electric-pair-pairs '((?\{ . ?\}) (?\( . ?\)) (?\[ . ?\]) (?\" . ?\")))
-(electric-pair-mode t) ;;自动输出成对括号
 
 ;; enable narrow-to-region
 (put 'narrow-to-region 'disabled nil)
 
 ;; save clipboard contents into kill-ring before replace theme
 (setq save-interprogram-paste-before-kill t)
-
-(delete-selection-mode 1)
 
 ;; 退出时不要询问，@see https://stackoverflow.com/questions/2706527/make-emacs-stop-asking-active-processes-exist-kill-them-and-exit-anyway
 (setq confirm-kill-processes nil)
@@ -39,7 +42,6 @@
 
 ;;(setq track-eol t) ;; 保持光标上下移动时一直在行尾，需要设置line-move-visual为nil
 ;; (setq line-move-visual t)		;在长行中移动
-(global-visual-line-mode 1)
 
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; 鼠标滚轮滑动一次滚动多少行
@@ -124,21 +126,6 @@
 ;;         "%n"))
 (setq frame-title-format "EMS")
 
-;;;; header-line
-(setq-default header-line-format
-      '(" "
-        (:eval (if buffer-file-name (buffer-file-name) "%b")) ;; buffer name or file path
-        " "
-        (:eval (if buffer-read-only "🔒")) ;; readonly state
-        "%n" ;; narrow state
-        ;;" %I "
-        (:eval (format " %s " buffer-file-coding-system))
-        (:eval (format " %s " major-mode)
-        ;;"%-"
-        )
-      ))
-
-
 
 ;; 去掉窗口边缘和分割窗口时分割条的边缘
 ;; http://emacsredux.com/blog/2015/01/18/customizing-the-fringes/
@@ -177,6 +164,8 @@
   (if is-windows
       (w32-send-sys-command 61488)))
 
+(add-hook 'after-init-hook #'maximize-frame)
+
 (defun fullscreen-toggle ()
   "Toggle fullscreen/maximize status."
   (interactive)
@@ -194,9 +183,7 @@
 
   (setq-default cursor-type '(bar . 2))
   (setq cursor-type '(bar . 2))
-
-
-  (global-hl-line-mode t)
+  
   )
 ;; (when is-gui
 ;; (add-hook 'after-init-hook
@@ -230,11 +217,6 @@
   )
 
 
-
-
-(setq default-directory user-emacs-directory)
-
-
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward) ;; 同名文件区分显示
 
@@ -242,6 +224,7 @@
 ;; 向右移动时，当对当前行起作用
 (setq auto-hscroll-mode 'current-line)
 
+(setq default-directory user-emacs-directory)
 
 ;; 自动保存书签
 (require 'bookmark)

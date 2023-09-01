@@ -190,14 +190,16 @@ example:
     )
   )
 
-
 (cl-defmacro eye/use-package (feature &key ensure reqby load-path command init config)
   `(progn
      (when ,load-path
        (add-package-path ,load-path))
      ,init
-	 (require ,feature nil 'noerror)
-     ,config))
+     (if ,command (add-autoload ,command ,load-path))
+     (if ,ensure (require ,feature nil 'noerror))
+     (with-eval-after-load ,feature
+       ,config)
+     ))
 
 ;;(eye-install-packages
 ;; '(("pfuture" . "https://github.com/Alexander-Miller/pfuture.git")

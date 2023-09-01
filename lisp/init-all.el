@@ -57,9 +57,9 @@
 ;;;; swiper counsel ivy
 (eye/use-package
  'swiper
- :ensure t
  :load-path "swiper"
- :command '((counsel-org-goto . "counsel")
+ :command '((ivy-read . "ivy")
+            (counsel-org-goto . "counsel")
             (counsel-M-x . "counsel")
             (counsel-find-file . "counsel")
             (counsel-buffer-or-recentf . "counsel")
@@ -107,13 +107,14 @@
 ;;;; ivy-posframe
 (eye/use-package
  'ivy-posframe
- :ensure t
  :load-path '("ivy-posframe" "posframe")
+ :command '(ivy-posframe-mode)
  :config
  (progn
    ;; (setq ivy-posframe-height nil) ;; 高度
-   (setq ivy-posframe-border-width 3)
-   (setq ivy-height 10) ;;ivy-posframe-height) ;; 把ivy-height设置成和ivy-posframe-height一样的高度可以让列表占满整个高度
+   (setq ivy-posframe-border-width 1)
+   (set-face-attribute 'ivy-posframe-border nil :background "dark red")
+   ;; (setq ivy-height 10) ;;ivy-posframe-height) ;; 把ivy-height设置成和ivy-posframe-height一样的高度可以让列表占满整个高度
    ;; display at `ivy-posframe-style'
    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
    ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
@@ -128,11 +129,10 @@
 ;; M-x 记录历史必须用
 (eye/use-package
  'smex
- :ensure t
  :load-path "smex"
+ :command '(smex)
  :config
  (progn
-   (require 'smex)
    ;; modify smex so that typing a space will insert a hyphen ‘-’ like in normal M-x
    ;; @see https://www.emacswiki.org/emacs/Smex
    (defadvice smex (around space-inserts-hyphen activate compile)
@@ -162,8 +162,7 @@
 (eye/use-package
  'color-rg
  :load-path "color-rg"
- :ensure t
- :command '(color-rg-search-input)
+ :command '(color-rg-read-input color-rg-search-input)
  :config
  (progn
    (set-face-attribute 'color-rg-font-lock-match nil :foreground "dark green")
@@ -182,7 +181,6 @@
 (eye/use-package
  'bm
  :load-path "bm"
- :ensure t
  :command '(bm-toggle bm-next bm-previous)
  :init
  (progn
@@ -205,10 +203,15 @@
   (eye/use-package
    'good-scroll
    :load-path '("good-scroll")
-   :ensure t
+   :command '(good-scroll-mode
+              good-scroll-up-full-screen
+              good-scroll-down-full-screen)
+   :init
+   (progn
+     (run-with-idle-timer 1 nil (lambda ()
+                                  (good-scroll-mode t))))
    :config
    (progn
-     (good-scroll-mode 1)
      ;; 绑定上下翻页键也支持像素滚动
      (global-set-key [next] #'good-scroll-up-full-screen)
      (global-set-key [prior] #'good-scroll-down-full-screen)
@@ -220,56 +223,58 @@
 ;;;; ctrlf
 (eye/use-package
  'ctrlf
- :ensure t
  :load-path "ctrlf"
+ :command '(ctrlf-forward-default)
  :config
  (progn
-   (ctrlf-mode +1)))
+   (ctrlf-mode t)))
 
 
 ;;;; super-save
 (eye/use-package
  'super-save
- :ensure t
  :load-path "super-save"
- :config
+ :command '(super-save-mode)
+ :init
  (progn
-   (setq auto-save-default nil)
-   (super-save-mode +1)
-   )
- )
+   (run-with-idle-timer 1 nil (lambda ()
+                                (setq auto-save-default nil)
+                                (super-save-mode t)))
+   ))
+
 
 ;;;; eno
 ;; similar package, https://github.com/lyjdwh/avy-thing-edit
-(eye/use-package 'eno
-                 :ensure t
-	             :load-path '("eno" "dash" "edit-at-point")
-	             :command '(eno-word-copy eno-word-copy-in-line eno-line-copy)
-	             :config
-	             (progn
-		           (defun eye/eno-copy ()
-		             (interactive)
-		             (cond
-		              ((equal major-mode 'c++-mode)
-		               (eno-word-copy))
-		              ((or (equal major-mode 'emacs-lisp-mode) (equal major-mode 'lisp-interaction-mode))
-		               (eno-symbol-copy))
-		              (t (eno-word-copy))))
-		           ))
+(eye/use-package
+ 'eno
+ :load-path '("eno" "dash" "edit-at-point")
+ :command '(eno-word-copy eno-word-copy-in-line eno-line-copy)
+ :config
+ (progn
+   (defun eye/eno-copy ()
+     (interactive)
+     (cond
+      ((equal major-mode 'c++-mode)
+       (eno-word-copy))
+      ((or (equal major-mode 'emacs-lisp-mode) (equal major-mode 'lisp-interaction-mode))
+       (eno-symbol-copy))
+      (t (eno-word-copy))))
+   ))
+
 
 
 ;;;; popper
 (eye/use-package
  'popper
- :ensure t
  :load-path "popper"
- :command '(popper-toggle-latest popper-cycle popper-toggle-type)
+ :command '(popper-mode popper-toggle-latest popper-cycle popper-toggle-type)
  :init
  (progn
    (setq popper-reference-buffers
          '("\\*Messages\\*"
            "Output\\*$"
            "\\*Async Shell Command\\*"
+           "\\*color-rg\\*"
            help-mode
            compilation-mode))
    )
@@ -284,21 +289,22 @@
    )
  )
 
-(require 'long-line)
+;; (require 'long-line)
 
 ;;;; markdown-mode
 (eye/use-package
  'markdown-mode
- :ensure t
  :load-path "markdown-mode"
+ :command '(markdown-mode)
+ :init (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
  )
 
 
 ;;;; lsp-bridge
 (eye/use-package
  'lsp-bridge
- :ensure t
  :load-path '("posframe" "markdown-mode" "yasnippet" "lsp-bridge")
+ :command '(lsp-bridge-mode global-lsp-bridge-mode)
  :config
  (progn
    (require 'yasnippet)
@@ -317,7 +323,7 @@
 ;;;; cmake-mode
 (eye/use-package
  'cmake-mode
- :ensure nil
+ :load-path "cmake-mode"
  :command '(cmake-mode)
  :init
  (progn
@@ -326,12 +332,12 @@
    (let ((cmake-el-dir (concat user-emacs-directory "site-lisp/cmake-mode")))
      (add-to-list 'load-path cmake-el-dir)
      (autoload 'cmake-mode "cmake-mode")
-   )))
+     )))
+
 
 ;;;; symbol-overlay
 (eye/use-package
  'symbol-overlay
- :ensure t
  :load-path "symbol-overlay"
  :command '(symbol-overlay-mode symbol-overlay-put)
  :config
@@ -354,37 +360,13 @@
    )
  )
 
-;; ;;;; sort-tab
-;; (eye/use-package
-;;  'sort-tab
-;;  :ensure nil
-;;  :load-path "sort-tab"
-;;  :config
-;;  (progn
-;;    (require 'sort-tab)
-;;    (sort-tab-mode 1)
-;;    ))
-
-;;;; global-readonly
-(eye/use-package
- 'global-readonly-mode
- :ensure t
- :load-path "global-readonly"
- :command 'global-readonly-toggle
- :init
- (progn
-   (setq global-readonly-disable-mouse nil)
-   ))
-
-
 ;;;; rainbow-delimiters
 ;; 括号高亮
 (eye/use-package
  'rainbow-delimiters
- :ensure t
  :load-path "rainbow-delimiters"
- :command 'rainbow-delimiters-mode
- :init
+ :command '(rainbow-delimiters-mode)
+ :config
  (progn
    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
 
@@ -402,14 +384,12 @@
 
 ;;;; orgmode
 ;; idle load
-
-;; (run-with-idle-timer 2 nil
-;;                      (lambda ()
 (require 'init-programming)
 (require 'init-cpp)
-(require 'init-tramp)
-(require 'init-magit)
-(require 'init-treemacs)
+
+(run-with-idle-timer 2 nil (lambda () (require 'init-tramp)))
+(run-with-idle-timer 2 nil (lambda () (require 'init-magit)))
+;; (require 'init-treemacs)
 
 ;; (require 'init-org)
 ;;(require 'init-session)
@@ -427,19 +407,6 @@
  'bing-dict
  :load-path "bing-dict"
  :command 'bing-dict-brief)
-
-(eye/use-package
- 'centaur-tabs ;; depends powerline
- :load-path '("powerline" "centaur-tabs")
- :config
- (progn
-   (setq centaur-tabs-style "bar")
-   (setq centaur-tabs-height 32)
-   (setq centaur-tabs-set-icons t)
-   (setq centaur-tabs-set-bar 'over)
-   (setq centaur-tabs-cycle-scope 'tabs)
-   ;; (centaur-tabs-mode t)
-   ))
 
 ;;;; theme
 (require 'init-theme)

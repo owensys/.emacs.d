@@ -1,24 +1,23 @@
 ;;;; which-key
 (eye/use-package
  'which-key
- :ensure t
  :load-path '("dash" "s" "f" "emacs-which-key")
+ :command '((which-key-mode . "which-key"))
  :config
  (progn
-   (which-key-mode 1)
    (which-key-setup-side-window-bottom)
    (defalias 'wkey 'which-key-add-key-based-replacements)
    ))
 
 ;; hydra
 (eye/use-package 'hydra
-                 :ensure t
                  :load-path "hydra"
                  )
 
 (eye/use-package 'keyfreq
-                 :ensure t
                  :load-path "keyfreq"
+                 :command '(keyfreq-mode)
+                 :init (add-hook 'after-init-hook #'keyfreq-mode)
                  :config
                  (progn
                    (setq keyfreq-excluded-commands
@@ -42,8 +41,8 @@
               )
             keyseq)
     (bind-key mode-map keycode func)
-    (if custom-name
-        (which-key-add-key-based-replacements keycode custom-name))
+    ;; (if custom-name
+    ;;     (which-key-add-key-based-replacements keycode custom-name))
     ))
 
 (defun eye-empty-func ()
@@ -100,7 +99,7 @@
   (eye-bind-ctrl-key modemap "aaf" #'isearch-forward)
   (eye-bind-ctrl-key modemap "aab" #'isearch-backward)
   (eye-bind-ctrl-key modemap "aad" #'eye-search-in-dir)
-  (wkey "C-a C-a" "search")
+  ;;(wkey "C-a C-a" "search")
 
   ;; ab:buffer
   (eye-bind-ctrl-key modemap "aba" #'bookmark-set)
@@ -108,14 +107,14 @@
   (eye-bind-ctrl-key modemap "abo" #'xah-open-file-fast)
   (eye-bind-ctrl-key modemap "abl" #'bookmark-bmenu-list)
   (eye-bind-ctrl-key modemap "abs" #'bookmark-bmenu-save)
-  (wkey "C-a C-b" "bookmark")
+  ;;(wkey "C-a C-b" "bookmark")
 
   ;; ac:eno/copy
   (eye-bind-ctrl-key modemap "acw" #'eno-word-copy)
   (eye-bind-ctrl-key modemap "acs" #'eno-symbol-copy)
   (eye-bind-ctrl-key modemap "acf" #'eye/copy-file-name)
   (eye-bind-ctrl-key modemap "acp" #'xah-copy-file-path "copy path")
-  (wkey "C-a C-c" "eno/copy")
+  ;;(wkey "C-a C-c" "eno/copy")
 
   ;; bb:buffer
   (eye-bind-ctrl-key modemap "bba" #'beginning-of-buffer)
@@ -128,7 +127,7 @@
   (eye-bind-ctrl-key modemap "bbs" #'save-buffer)
   (eye-bind-ctrl-key modemap "bbw" #'eye/swap-buffer)
   (eye-bind-ctrl-key modemap "bbq" #'widen)
-  (wkey "C-b C-b" "buffer/narrow")
+  ;;(wkey "C-b C-b" "buffer/narrow")
 
   ;; buffer and file
   (eye-bind-ctrl-key modemap "ffo" 'my-find-file "find file")
@@ -140,33 +139,34 @@
   (eye-bind-ctrl-key modemap "fff" 'xah-open-file-fast)
   (eye-bind-ctrl-key modemap "ffr" 'counsel-buffer-or-recentf)
   (eye-bind-ctrl-key modemap "ffn" 'eye/create-tmp-buffer)
-  (wkey "C-f C-f" "file")
+  ;;(wkey "C-f C-f" "file")
 
   (eye-bind-ctrl-key modemap "fdj" 'dired-jump)
-  (wkey "C-f C-d" "dired")
+  ;;(wkey "C-f C-d" "dired")
 
   ;; window
   (eye-bind-ctrl-key modemap "2" 'split-window-below "split hor")
   (eye-bind-ctrl-key modemap "3" 'split-window-right "split ver")
   (eye-bind-ctrl-key modemap "1" 'delete-other-windows)
   (eye-bind-ctrl-key modemap "0" 'delete-window)
-  (wkey "C-w C-w" "window")
+  ;;(wkey "C-w C-w" "window")
 
   (eye-bind-ctrl-key modemap "wf1" 'make-frame-command "new frame")
   (eye-bind-ctrl-key modemap "wfq" 'other-frame)
-  (wkey "C-w C-f" "frame")
+  ;;(wkey "C-w C-f" "frame")
 
   (eye-bind-ctrl-key modemap "wtn" 'tab-new)
   (eye-bind-ctrl-key modemap "wtc" 'tab-close)
   (eye-bind-ctrl-key modemap "wtr" 'tab-rename)
   (eye-bind-ctrl-key modemap "wts" 'tab-bar-select-tab-by-name)
-  ;; (wkey "C-w C-t" "tab")
+  ;; ;;(wkey "C-w C-t" "tab")
 
   (eye-bind-ctrl-key modemap "tt" 'centaur-tabs-mode)
   (eye-bind-ctrl-key modemap "tc" 'treemacs)
   (eye-bind-ctrl-key modemap "tl" 'global-display-line-numbers-mode "linenum")
   (eye-bind-ctrl-key modemap "tm" 'menu-bar-mode)
   (eye-bind-ctrl-key modemap "ts" 'scroll-bar-mode)
+  (eye-bind-ctrl-key modemap "tw" 'which-key-mode)
   (eye-bind-ctrl-key modemap "ti" 'ivy-posframe-mode)
   (eye-bind-ctrl-key modemap "tn" 'toggle-truncate-lines)
   (eye-bind-ctrl-key modemap "tr" 'global-readonly-toggle)
@@ -180,13 +180,13 @@
 
   (eye-bind-ctrl-key modemap "err" 'replace-rectangle)
   (eye-bind-ctrl-key modemap "erk" 'kill-rectangle)
-  (wkey "C-e C-r" "rectangle")
+  ;;(wkey "C-e C-r" "rectangle")
 
   (eye-bind-ctrl-key modemap "dbt" 'bm-toggle)
   (eye-bind-ctrl-key modemap "dbn" 'bm-next)
   (eye-bind-ctrl-key modemap "dbp" 'bm-previous)
   (eye-bind-ctrl-key modemap "dbs" 'counsel-bm)
-  (wkey "C-d C-b" "bm")
+  ;;(wkey "C-d C-b" "bm")
 
   (eye-bind-ctrl-key modemap "dcl" 'counsel-etags-list-tag "list tag")
   (eye-bind-ctrl-key modemap "dcd" 'counsel-etags-find-tag-at-point "find tag at point")
@@ -195,12 +195,12 @@
   (eye-bind-ctrl-key modemap "dc0" 'eye/create-ctags-file-by-cmd "create tags file")
   (eye-bind-ctrl-key modemap "dc1" 'eye-find-h-or-c "find h/c file")
   (eye-bind-ctrl-key modemap "dct" 'goto-line)
-  (wkey "C-d C-c" "code navigate")
+  ;;(wkey "C-d C-c" "code navigate")
 
   (eye-bind-ctrl-key modemap "dsd" 'lsp-bridge-find-def)
   (eye-bind-ctrl-key modemap "dsq" 'lsp-bridge-find-def-return)
   (eye-bind-ctrl-key modemap "dsr" 'lsp-bridge-find-references)
-  (wkey "C-d C-s" "lsp-bridge")
+  ;;(wkey "C-d C-s" "lsp-bridge")
 
   (eye-bind-ctrl-key modemap "dom" 'outline-minor-mode)
   (eye-bind-ctrl-key modemap "dos" 'outline-show-entry)
@@ -208,7 +208,7 @@
   (eye-bind-ctrl-key modemap "don" 'outline-next-heading)
   (eye-bind-ctrl-key modemap "dop" 'outline-previous-heading)
   (eye-bind-ctrl-key modemap "doa" 'outline-show-all)
-  (wkey "C-d C-o" "outline")
+  ;;(wkey "C-d C-o" "outline")
 
   (unset-mode-key modemap (kbd "C-o"))
   (eye-bind-ctrl-key modemap "ony" 'org-toggle-link-display "toggle link")
@@ -252,8 +252,8 @@
   (eye-bind-ctrl-key modemap "oou" 'eye/list-bookmarks)
   (eye-bind-ctrl-key modemap "ooj" 'eye/ts-open-bookmark)
   (eye-bind-ctrl-key modemap "ooy" 'bing-dict-brief)
-  (wkey "C-o C-n" "note")
-  (wkey "C-o C-o" "agenda")
+  ;;(wkey "C-o C-n" "note")
+  ;;(wkey "C-o C-o" "agenda")
 
   (eye-bind-ctrl-key modemap "otn" 'org-table-next-row)
   (eye-bind-ctrl-key modemap "otcr" 'org-table-insert-row)
@@ -261,12 +261,12 @@
   (eye-bind-ctrl-key modemap "otcc" 'org-table-insert-column)
   (eye-bind-ctrl-key modemap "otkr" 'org-table-kill-row)
   (eye-bind-ctrl-key modemap "otkc" 'org-table-delete-column)
-  (wkey "C-o C-t" "org-table")
-  (wkey "C-o C-t C-k" "remove")
-  (wkey "C-o C-t C-c" "create")
+  ;;(wkey "C-o C-t" "org-table")
+  ;;(wkey "C-o C-t C-k" "remove")
+  ;;(wkey "C-o C-t C-c" "create")
 
   (eye-bind-ctrl-key modemap "olh" 'outline-hide-entry)
-  (wkey "C-o C-l" "outline")
+  ;;(wkey "C-o C-l" "outline")
 
 
   (eye-bind-ctrl-key modemap "ohh" 'symbol-overlay-put)
@@ -274,7 +274,7 @@
   (eye-bind-ctrl-key modemap "ohn" 'symbol-overlay-jump-next)
   (eye-bind-ctrl-key modemap "ohr" 'symbol-overlay-rename)
   (eye-bind-ctrl-key modemap "ohk" 'symbol-overlay-remove-all)
-  (wkey "C-o C-h" "overlay highlight")
+  ;;(wkey "C-o C-h" "overlay highlight")
 
   ;; denote
   ;; (eye-bind-ctrl-key modemap "ojj" #'denote) ; our custom command
