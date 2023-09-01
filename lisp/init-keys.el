@@ -359,6 +359,7 @@
 
 (global-set-key (kbd "<C-prior>") 'tab-previous) ;; C- page up
 (global-set-key (kbd "<C-next>") 'tab-next) ;; C- page down
+(global-set-key (kbd "<C-S-prior>") 'tab-bar-new-tab)
 (global-set-key (kbd "<C-S-next>") 'tab-bar-select-tab-by-name) ;; C- page down
 
 ;; (global-set-key (kbd "<C-insert>") 'emms-stop) ;; C- insert
