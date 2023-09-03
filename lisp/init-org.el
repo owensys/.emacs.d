@@ -1,66 +1,88 @@
+;;;; notebook hooks
+(defcustom notebook-before-open-hook nil
+ "Functions to run before load notebook."
+ :type 'hook)
+
+(defcustom notebook-after-open-hook nil
+ "Functions to run after load notebook."
+ :type 'hook)
+
+
+(defun eye/open-notebook ()
+  (interactive)
+  (require 's)
+  (require 'f)
+  (let* ((note-dir (counsel-read-directory-name "Select note directory: ")))
+    (run-hook-with-args 'notebook-before-open-hook note-dir)
+    (find-file (expand-file-name "index.org" note-dir))
+    (run-hook-with-args 'notebook-after-open-hook note-dir)
+    (message "opened notebook:%s" note-dir)
+    ))
+;;;
+
 ;;;; org
 (setq org-modules-loaded t) ;; 加速orgmode 加载，https://emacs-china.org/t/org-babel/18699/12
 
+;; speed up org load https://emacs-china.org/t/org-babel/18699/12
+(with-eval-after-load 'org
+  (setq org-modules (cl-set-difference org-modules '(ol-gnus
+                                                     ol-eww
+                                                     ol-irc
+                                                     ol-rmail
+                                                     ol-w3m
+                                                     ol-bibtex
+                                                     ))))
+
 (require 'org)
-
-(defun get-locale-book-dir ()
-  (let* ((file-content (get-string-from-file "~/.notedir")))
-    (require 's)
-    (s-trim file-content)
-    ))
-
-;;(add-to-list 'auto-mode-alist '("\\.gtd$" . org-mode))
 
 ;; 9.3使用<s需要org-tempo
 (when (>= emacs-major-version 27)
   (require 'org-tempo))
 
+(setq org-src-fontify-natively t) ;; 代码块内语法高亮
+(setq org-src-tab-acts-natively t)
+;; (setq org-src-window-setup 'current-window) ;; 在当前window打开src block
+;; (add-hook 'org-mode-hook 'yas-minor-mode)
+;; indent content
+(setq org-edit-src-content-indentation 0) ;; 代码块默认不缩进
 
-(progn
+;; 不开启org-indent-mode
+;;(setq org-startup-indented nil)
+;;(setq-default org-startup-indented nil)
+;; 开启org-indent-mode，此模式并不修改文件内容，正文即使缩进显示了，内容实际还是在行首的
+(setq org-startup-indented t)
+(setq-default org-startup-indented t)
 
-  (setq org-src-fontify-natively t) ;; 代码块内语法高亮
-  (setq org-src-tab-acts-natively t)
-  ;; (setq org-src-window-setup 'current-window) ;; 在当前window打开src block
-  ;; (add-hook 'org-mode-hook 'yas-minor-mode)
-  ;; indent content
-  (setq org-edit-src-content-indentation 0) ;; 代码块默认不缩进
+(setq org-hide-block-startup nil) ;; 是否折叠代码块
+(setq org-startup-folded nil) ;; 是否折叠
+;; 默认显示图片出来
+(setq org-startup-with-inline-images t)
+;; 保留几行空白行
+(setq org-cycle-separator-lines 0)
+;; always require new line in header below
+(setq require-final-newline t)
+(setq org-tags-column 0)
+(setq org-return-follows-link t) ;; 是否回车打开link
+(setq org-startup-truncated nil)
+(setq org-fontify-quote-and-verse-blocks t)  ;; 开启begin quote区域样式
+(setq org-confirm-babel-evaluate nil) ;; code执行免应答（Eval code without confirm）
 
-  ;; 不开启org-indent-mode
-  ;;(setq org-startup-indented nil)
-  ;;(setq-default org-startup-indented nil)
-  ;; 开启org-indent-mode，此模式并不修改文件内容，正文即使缩进显示了，内容实际还是在行首的
-  (setq org-startup-indented t)
-  (setq-default org-startup-indented t)
+;; 修改headline的折叠标记
+;;(setq org-ellipsis " ")
+;; (setq org-ellipsis "…")  ;; ↩
+(setq org-ellipsis " [+]")
+(set-face-underline 'org-ellipsis nil) ;; 去除下划线
+;; (set-face-underline 'org-link nil)
 
-  (setq org-hide-block-startup nil) ;; 是否折叠代码块
-  (setq org-startup-folded nil) ;; 是否折叠
-  ;; 默认显示图片出来
-  (setq org-startup-with-inline-images t)
-  ;; 保留几行空白行
-  (setq org-cycle-separator-lines 0)
-  ;; always require new line in header below
-  (setq require-final-newline t)
-  (setq org-tags-column 0)
-  (setq org-return-follows-link t) ;; 是否回车打开link
-  (setq org-startup-truncated nil)
-  (setq org-fontify-quote-and-verse-blocks t)  ;; 开启begin quote区域样式
-  (setq org-confirm-babel-evaluate nil) ;; code执行免应答（Eval code without confirm）
 
-  ;; 修改headline的折叠标记
-  ;;(setq org-ellipsis " ")
-  ;; (setq org-ellipsis "…")  ;; ↩
-  (setq org-ellipsis " [+]")
-  (set-face-underline 'org-ellipsis nil) ;; 去除下划线
-  ;; (set-face-underline 'org-link nil)
-  )
 
 ;; 支持imagemagic时，使用缩略图
 ;; 在链接前添加信息：#+ATTR_ORG: :width 300
 ;; (when (string-match-p "imagemagic" system-configuration-features)
-  ;; (setq org-image-actual-width nil)
+;; (setq org-image-actual-width nil)
 ;; )
 ;; 在环境变量中有imagemagic，不需要判断system-configuration-features
-(require 'ox)
+;; (require 'ox)
 (setq org-image-actual-width '(600)) ;; 没有设置#+ATTR_ORG时，最大显示宽度
 
 ;; 显示网络链接的图片
@@ -190,255 +212,12 @@
  calendar-week-start-day 1 ;; 日历从周一开始显示
  )
 
-
-(defun eye/insert-src-block-example ()
-  (interactive)
-  (insert (format "#+begin_example")) ;; 要大写才能显示图标？
-  (org-newline-and-indent) ;; 自动缩进
-  ;;(newline-and-indent)
-  (insert "#+end_example")
-  (org-newline-and-indent) ;; 自动缩进
-  (previous-line 2) ;; 进到内容编辑区域
-  (org-edit-src-code)
-  )
-
-(defun eye/insert-src-block-quote ()
-  (interactive)
-  (insert (format "#+begin_quote"))
-  (org-newline-and-indent) ;; 自动缩进
-  ;;(newline-and-indent)
-  (insert "#+end_quote")
-  (org-newline-and-indent) ;; 自动缩进
-  (previous-line 2) ;; 进到内容编辑区域
-  (end-of-line)
-  )
-
-(defun eye/insert-src-block-plantuml ()
-  (interactive)
-  (insert (format "#+begin_src plantuml :cmdline -charset utf-8 :file %s/%s"
-                  eye-org-file-attach-base-dir
-                  (format-time-string "%Y-%m-%d_%H-%M-%S.svg")))
-  (org-newline-and-indent) ;; 自动缩进
-  (insert "@startuml\n\nscale 2
-!theme cerulean-outline
-'修正中文字体
-skinparam defaultFontName YaHei
-
-'标题
-title 链接库关系图
-
-@enduml\n")
-  (insert "#+end_src")
-  (org-newline-and-indent) ;; 自动缩进
-  (previous-line 3) ;; 进到内容编辑区域
-  (org-edit-src-code)
-  )
-
-(defun eye/insert-src-block-mindmap ()
-  (interactive)
-  (insert (format "#+begin_src plantuml :cmdline -charset utf-8 :file %s/%s"
-                  eye-org-file-attach-base-dir
-                  (format-time-string "%Y-%m-%d_%H-%M-%S.svg")))
-  (org-newline-and-indent) ;; 自动缩进
-  (insert "@startmindmap\n\n@endmindmap\n")
-  (insert "#+end_src")
-  (org-newline-and-indent) ;; 自动缩进
-  (previous-line 3) ;; 进到内容编辑区域
-  (org-edit-src-code)
-  )
-
-;; 交互式选择插入代码块 @See http://wenshanren.org/?p=327
-(defun eye/org-insert-src-block (src-code-type)
-  "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
-  (interactive
-   (let ((src-code-types
-	  '("c" "c++" "shell" "emacs-lisp" "java" "lisp" "mytex" "quote" "python" "js" "clojure" "css"
-	    "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
-	    "octave" "oz" "plantuml" "mindmap" "R" "sass" "screen" "sql" "awk" "ditaa"
-	    "haskell" "latex" "matlab" "ocaml" "org" "perl" "ruby"
-	    "scheme" "sqlite")))
-     (list (ido-completing-read "Source code type: " src-code-types))))
-  (progn
-    ;;(newline-and-indent) ; no auto indent space
-
-    (cond ((string-equal "example" src-code-type)
-           (eye/insert-src-block-example))
-          ((string-equal "quote" src-code-type)
-           (eye/insert-src-block-quote))
-          ((string-equal "plantuml" src-code-type)
-           (eye/insert-src-block-plantuml))
-          ((string-equal "mindmap" src-code-type)
-           (eye/insert-src-block-mindmap))
-          ((string-equal "mytex" src-code-type)
-           (eye/insert-src-block-mytex))
-          (t
-           (insert (format "#+begin_src %s" src-code-type))
-           (org-newline-and-indent)
-           (insert "#+end_src")
-           (org-newline-and-indent)
-           (previous-line 2) ;; 进到内容编辑区域
-           (org-edit-src-code)
-           ))
-    ))
-
-
-
-
-
-(defun eye/org-insert-create-date ()
-  (interactive)
-  (save-excursion
-    (org-back-to-heading)
-    (org-set-property "CREATED" (format-time-string "%Y-%m-%d %T"))))
-
-
-
 ;;;; ob-shell
 ;; support babel execute
-(require 'ob-shell)
-(org-babel-do-load-languages
- 'org-babel-load-languages '((emacs-lisp . t)
-			     (shell . t)))
-
-
-
-;;;; htmlize
-(eye/use-package 'htmlize
-                 :ensure t
-                 :load-path '("htmlize" "emacs-htmlize"))
-
-
-;;;; plantuml
-;; must set java.exe path
-(eye/use-package 'plantuml-mode
-                 :ensure t
-                 :load-path "plantuml-mode"
-                 :init
-                 (progn
-                   (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/bin/plantuml.jar"))
-                   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-                   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-
-                   )
-                 :config
-                 (progn
-                   (setq plantuml-jar-path "~/.emacs.d/bin/plantuml.jar")
-                   (setq plantuml-default-exec-mode 'jar)
-                   ;; Enable plantuml-mode for PlantUML files
-                   (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-                   ;; (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-
-                   ))
-
-
-(defun eye--execute-cmd (exe args)
-  "执行命令，并获取打印结果"
-  (let* ((tmp-file "d:/tmp/tmp.dat")
-         result-content command)
-    ;; 第一个参数固定为命令行输出文件
-    (setq command (format "%s %s %s" exe tmp-file args))
-    ;; (message "execute cmd:%s" command)
-    (shell-command command)
-    (setq result-content (get-string-from-file tmp-file))
-    (delete-file tmp-file)
-    result-content
-    )
-  )
-
-
-(defun eye--open-bookmarks (&optional bookmarks-file)
-  (let ((result (eye--execute-cmd (executable-find "list-bookmarks.exe") bookmarks-file))
-        sel-list select-item url
-        )
-    (if (and result (not (string-empty-p result)))
-        (progn
-          (setq sel-list (s-split "\n" result))
-          (setq select-item (ivy-read "Open bookmark: " sel-list))
-          (setq sel-list (s-split "::" select-item))
-          (setq url (cadr sel-list))
-          ;; (browse-url-default-browser (cadr sel-list))
-          (let ((my/default-browser (ivy-read "Use browser: " '("firefox" "chrome"))))
-            (eye/open-url url))
-          )
-      (message "bookmarks is empty.");
-      )))
-
-(defun eye/open-bookmarks ()
-  (interactive)
-  (eye--open-bookmarks (concat (get-locale-book-dir) "/bookmarks.org")))
-
-(defun eye/open-bookmark-work ()
-  (interactive)
-  (eye--open-bookmarks (concat (get-locale-book-dir) "/bookmarks-work.org")))
-
-;; 只折叠当前root heading
-;; @see https://christiantietze.de/posts/2019/06/org-fold-heading/
-(defun eye/org-foldup ()
-  "Hide the entire subtree from root headline at point."
-  (interactive)
-  (while (ignore-errors (outline-up-heading 1)))
-  (org-flag-subtree t))
-
-
-(defun eye/org-shifttab (&optional arg)
-  (interactive "P")
-  (if (or (null (org-current-level))     ; point is before 1st heading, or
-          (and (= 1 (org-current-level)) ; at level-1 heading, or
-               (org-at-heading-p))
-          (org-at-table-p))              ; in a table (to preserve cell movement)
-      ; perform org-shifttab at root level elements and inside tables
-      (org-shifttab arg)
-      ; try to fold up elsewhere
-      (eye/org-foldup)))
-(org-defkey org-mode-map (kbd "S-<tab>") 'eye/org-shifttab)
-
-
-(defun eye-get-time-week (time)
-  (let ((week (format-time-string "%A" time)))
-    (cond
-     ((string-equal "Monday"    week) "周一")
-     ((string-equal "Tuesday"   week) "周二")
-     ((string-equal "Wednesday" week) "周三")
-     ((string-equal "Thursday"  week) "周四")
-     ((string-equal "Friday"    week) "周五")
-     ((string-equal "Saturday"  week) "周六")
-     ((string-equal "Sunday"    week) "周日")
-     (t nil)
-     )))
-
-
-
-(require 'init-org-note-attach)
-
-
-;;;; org-bullets
-;; (eye-install-packages '(("org-bullets" . "https://github.com/sabof/org-bullets.git")))
-(eye/use-package
- 'org-bullets
- :ensure t
- :load-path "org-bullets"
- :config
- (progn
-   ;; find emoji list here: http://unicode.org/emoji/charts/full-emoji-list.html#1f644
-   ;; (setq org-bullets-bullet-list '("◉" "☯" "○" "☯" "✸" "☯" "✿" "☯" "✜" "☯" "◆" "☯" "▶"))
-   ;; (setq org-bullets-bullet-list '("◉" "☯" "✿" "☯" "✸" "☯" "✿" "☯" "✜" "☯" "◆" "☯" "▶" "○"))
-   ;; (setq org-bullets-bullet-list '("☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯"))
-   ;; (setq org-bullets-bullet-list '("⚫" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•")) ;; too small?
-   ;; (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫")) ;; #+26AB
-   ;; (setq org-bullets-bullet-list '("☰" "◆" "○" "◆" "○" "◆" "○" "◆" "○" "◆" "○" "◆" "○"))
-   ;; U+24B6++++
-   ;; (setq org-bullets-bullet-list '("Ⓐ" "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ" "Ⓗ" "Ⓘ" "Ⓙ"))
-   ;; U+2460+++
-   ;; (setq org-bullets-bullet-list '("①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "⑩" "⑪" "⑫"))
-   ;; (setq org-bullets-bullet-list '("☰" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶"))
-   ;; (setq org-bullets-bullet-list '("☰" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆"))
-   (setq org-bullets-bullet-list '("✿" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" ))
-
-
-   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-   ))
-
-
+;; (require 'ob-shell)
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages '((emacs-lisp . t)
+;; 			     (shell . t)))
 
 ;;;; pretty symbols mode
 (defun eye-setup-prettify-symbols ()
@@ -494,58 +273,71 @@ title 链接库关系图
 (add-to-list 'load-path (concat eye-packages-dir "/transient/lisp"))
 
 ;;;; my anchor link
-(require 'init-org-anchor-link)
-
-(when is-gui
-  ;; 支持图片滚动
-  ;; 用good-scroll也支持图片滚动，不需要同时用两个包
-  ;; 2021-12-15: 用iscoll更稳定一些，good-scroll可能是卡死
-  (eye/use-package
-   'iscroll
-   :ensure t
-   :load-path "iscroll"
-   :config
-   (progn
-     (iscroll-mode 1)
-     ))
-  )
-
-
-(require 'init-latex)
-
-
-;;;; org-tree-slide
-(eye/use-package 'org-tree-slide
-                 :load-path "org-tree-slide"
-                 :command '(org-tree-slide-mode)
-                 :ensure nil
-                 )
+;; (require 'init-org-anchor-link)
 
 
 (add-hook 'org-mode-hook 'eye--org-mode-hook-setup)
 
 
-;;; readonly file
-(defun ansible-check-managed ()
-  "Check if the file contain \"Ansible managed\" and notify user."
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (when (search-forward ":readonly:"
-                          (point-at-bol 10) t)
-      (notify-managed-file "This file is readonly default"))))
+;; 禁用鼠标点击时打开链接
+(setq org-mouse-1-follows-link nil) ;; 不起作用
+(setq mouse-1-click-follows-link nil) ;; 起作用
+(define-key org-mouse-map [mouse-2] #'ignore) ;; 中键
+(define-key org-mouse-map [mouse-3] #'org-open-at-mouse) ;; 右键
 
-(defun notify-managed-file (&optional msg)
-  "Change the buffer to read-only and alert the user.
-                    MSG change default message."
-  (interactive)
-  (read-only-mode t)
-  (if msg
-      (message msg)
-      (message "Alert")))
+;;;; diary
+(require 'calendar)
+(require 'diary-lib)
 
-(add-hook 'find-file-hook #'ansible-check-managed)
 
+(setq org-clock-string "计时:")
+;;org-closed-string "已关闭:"
+;;org-deadline-string "最后期限:"
+;;org-scheduled-string "计划任务:"
+;;%a表示插入时间时显示“周几”，如果没有设置system-time-locale为"C"的话，会显示乱码
+(setq system-time-locale "C")
+;; (setq org-time-stamp-formats '("<%Y-%m-%d %A>" . "<%Y-%m-%d %A %H:%M>"))
+(setq org-time-stamp-formats  '("<%Y-%m-%d 周%u>" . "<%Y-%m-%d 周%u %H:%M>"))
+;; org-time-stamp-custom-formats
+(setq org-deadline-warning-days 30)	;最后期限到达前n天即给出提醒
+(setq org-link-file-path-type  'relative) ;插入链接时使用相对路径
+(setq org-log-done 'time)		 ;完成时添加时间
+(setq org-extend-today-until 4) ;;以4点当作一天的开始，用于agenda
+(setq org-enforce-todo-dependencies t)
+
+;;;; drop
+(setq dnd-protocol-alist
+	    `(("^file:" . my-dnd-insert-link-v2)
+	      ("^\\(https?\\|ftp\\|file\\|nfs\\)://" . my-dnd-insert-link-v2)))
+
+
+
+(setq eye-match-drop-file-exp
+      (concat "\\(jpg\\|png\\|gif\\|"
+	      "zip\\|xz\\|gz\\|7z\\|"
+	      "jpeg\\|txt\\|doc\\|docx\\|xlsx\\|"
+	      "apk\\|rar\\|md\\|json\\|"
+	      "html\\|bak\\|db\\|"
+	      "pptx\\|pdf\\)$"))
+
+(setq eye-match-image-file-exp
+      (concat "\\(jpg\\|jpeg\\|png\\|gif\\)$"))
+
+;;(setq is-support-imagemagic (string-match-p "imagemagic" system-configuration-features))
+(setq is-support-imagemagic (image-type-available-p 'imagemagick))
+
+
+;;;; org-file-apps
+;; 使用系统程序打开mindmap文件
+(add-to-list 'org-file-apps '("\\.mm\\'" . system))
+(add-to-list 'org-file-apps '("\\.drawio\\'" . system))
+
+
+;;;; latex
+(require 'init-latex)
+
+;;;; utils
+(require 'init-org-utils)
 
 ;;;; deft
 (eye/use-package
@@ -553,12 +345,15 @@ title 链接库关系图
  :ensure t
  :load-path "deft"
  :command 'deft
+ :init
+ (progn
+   (add-hook 'notebook-after-open-hook (lambda (note-dir)
+                                         (setq deft-directory note-dir))))
  :config
  (progn
    (setq deft-recursive t)
    (setq deft-use-filename-as-title nil) ;;是否把文件名作为标题
    (setq deft-extensions '("org"))
-   (setq deft-directory (get-locale-book-dir))
    (setq deft-file-limit 1000) ;;最多显示多少文件，nil不限制
    (setq deft-filter-only-filenames t) ;;只搜索文件名
    ;;(setq deft-filter-only-filenames nil) ;;搜索标题
@@ -582,265 +377,189 @@ title 链接库关系图
    (set-face-attribute 'deft-time-face nil :font en-font-name)
 
 
-   ;; (let* ((raw-title " 2022-okr-o1-kr-1 [[a:9acb9008][⚓]] "))
-   ;;   (message "%s" (s-replace-regexp "\\[\\[a:[0-9a-z]+\\]\\[⚓\\]\\]" "" raw-title))
-   ;;   )
+   ))
 
-   ;; (let* ((raw-title " 2022-okr-o1-kr-1 [[a:9acb9008][⚓]] "
-   ;;                   ;;"[[a:4abb0f57][测试新页面]] "
-   ;;                   ))
-   ;;   (setq raw-title (s-replace-regexp "\\[\\[a:[0-9a-z]+\\]\\[" "" raw-title))
-   ;;   (setq raw-title (s-replace-regexp "\\]\\]" "" raw-title))
-   ;;   (setq raw-title (s-replace-regexp "⚓" "" raw-title))
+;;;; org-journal
+;; System locale to use for formatting time values.
+;; current is "zh_CN.UTF-8", if set to "C", Make sure that the weekdays in the
+;; time stamps of your Org mode files and in the agenda appear in English.
+;; @see https://github.com/batsibe/org-journal
+;;; usage
+;; M-x
+;; org-journal-new-entry
+;; org-journal-new-date-entry
 
-   ;;   (message "%s" (s-trim raw-title))
+;; Calendar mode keys
+;; jd view journal of selected day
+;; jn create journal
+;;
+(eye/use-package
+ 'org-journal
+ :load-path "org-journal"
+ :ensure t
+ :config
+ (progn
+   (setq org-journal-file-type 'daily)
+   ;; (setq org-journal-file-format "%Y-%m-%d.org")
+   ;; (setq org-journal-date-format "%Y-%m-%d")
+   ;; (setq org-journal-date-prefix "") ;; 使不要出现重复的headline
 
-   ;;   )
-
-   ;; (setq deft-strip-title-regexp (concat deft-strip-title-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:"))
-  ;;  (setq deft-strip-title-regexp
-;; 	 (concat
-;; 	  "\\(?:^%+\\|^#\\+TITLE: *\\|^[#* ]+\\|-\\*-[[:alpha:]]+-\\*-\\|^Title:[	 ]*\\|#+$\\)"
-;; 	  ":PROPERTIES:\n\\(.+\n\\)+:END:"
-;; 	  ))
-
-;;    (let ((str ":PROPERTIES:
-;; #+TITLE: ts-mv04-临时关闭人脸识别
-;; ")
-
-;;          )
-;;      (setq str (s-replace-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n" "" str))
-;;      (message "str:%s" str)
-;;      )
-
-
-   ;; 无法过滤properties
-   (defun eye-parse-title-for-deft (title)
-     (let ((raw-title title))
-       ;; (setq raw-title (s-replace-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n" "" raw-title))
-       ;; (message "title: %s, raw-title:%s" title raw-title) ;; title可能是:PROPERTIES:
-       (setq raw-title (deft-strip-title raw-title))
-       (if (s-contains-p "[[a:" raw-title)
-           (progn
-             ;; (setq raw-title (s-replace-regexp "\\[\\[a:[0-9a-zA-Z]+\\]\\[⚓\\]\\]" "" raw-title))
-             (setq raw-title (s-replace-regexp "\\[\\[a:[0-9a-z]+\\]\\[" "" raw-title))
-             (setq raw-title (s-replace-regexp "\\]\\]" "" raw-title))
-             (setq raw-title (s-replace-regexp "⚓" "" raw-title))
-             )
-         )
-       (s-trim raw-title)
-       ))
-   ;; (setq deft-parse-title-function 'eye-parse-title-for-deft)
-
-
-   ;; 过滤PROPERTIES，@see https://github.com/jrblevin/deft/issues/75
-   (advice-add 'deft-parse-title :override
-    (lambda (file contents)
-      (if deft-use-filename-as-title
-	  (deft-base-filename file)
-	(let* ((case-fold-search 't)
-	       (begin (string-match "title: " contents))
-	       (end-of-begin (match-end 0))
-	       (end (string-match "\n" contents begin)))
-	  (if begin
-	      (eye-parse-title-for-deft (substring contents end-of-begin end))
-	    (format "%s" (file-name-nondirectory file)))))))
+   ;; ;;自定义文件头信息
+   ;; (setq org-journal-file-header #'my/org-journal-file-header)
+   ;; (defun my/org-journal-file-header(tm)
+   ;;   (format ":PROPERTIES:\n:ID:       %s\n:END:\n#+title: %s-%s\n\n"
+   ;;           (my-generate-uuid)
+   ;;           (format-time-string "%Y-%m-%d" tm)
+   ;;           (eye-get-time-week tm)))
+   (add-hook 'notebook-before-open-hook
+             (lambda (note-dir)
+               (setq org-journal-dir (concat note-dir "/journals"))))
+   
+   (setq org-journal-file-type 'yearly)
+   (setq org-journal-file-format "%Y.org")
+   (defun my/org-journal-date-format (tm)
+     (format "* %s %s"
+             (format-time-string "%Y-%m-%d" tm)
+             (eye-get-time-week tm))
+     )
+   (setq org-journal-date-format #'my/org-journal-date-format)
+   
+   ))
 
 
+;;;; capture
+(defun eye-setup-capture-template (note-dir)
+  (require 'org-capture)
+  ;; capture 的目标路径不能直接使用 concat
+  (setq eye-org-inbox-path (concat note-dir "/bookmarks.org"))
+  (setq eye-org-bookmarks-path (concat note-dir "/bookmarks.org"))
+  (setq eye-org-contacts-path (concat note-dir "/contacts.org"))
+  (setq eye-org-books-path (concat note-dir "/books.org"))
+  (setq org-capture-templates
+        '(("i" "Inbox" entry (file+headline eye-org-inbox-path "Inbox")
+	   "* TODO %i%?")
+          ("b" "Bookmark" entry (file+headline eye-org-bookmarks-path "Bookmarks")
+           "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
+          ("c" "Contacts" entry (file eye-org-contacts-path)
+               "* %^{姓名} %^{手机号}p %^{邮箱}p %^{住址}p\n\n  %?" :empty-lines 1 :kill-buffer 1)
+          ("o" "Books" entry (file eye-org-books-path)
+           "* %^{书名} %^{作者}p \n  %?" :empty-lines 1)
+          ))
+  )
+
+(defun eye-setup-org-dirs (note-dir)
+  (require 's)
+  (setq org-directory note-dir)
+  (setq org-default-notes-file (concat note-dir "/inbox.org"))
+  (setq diary-file (concat note-dir "/diary"))
+  
+  ;; (setq eye-org-file-attach-base-dir "~/attach")
+  (setq eye-org-file-attach-base-dir (s-trim (get-string-from-file (concat note-dir "/attach_dir"))))
+
+  (setq eye-bookmarks-path (concat note-dir "/bookmarks.org"))
+  (setq eye-org-contacts-file (concat note-dir "/contacts.org"))
+
+  ;; org-archive-subtree moving an tree to archive file
+  ;; settings on org file #+ARCHIVE file head or ARCHIVE PROPERTY
+  ;; (setq org-archive-location (concat gtd-archive-path "::"))
+  ;; %s表示当前文件名
+  ;; (setq org-archive-location "%s_archive::datetree/* Archived Tasks")
+  ;; 按时间归档
+  (setq org-archive-location (concat
+                              note-dir
+                              "/archive/" (format-time-string "%Y")
+                              "_archive.org::datetree/* Archived Tasks")) ;; 归档文件
+
+
+  (when (fboundp 'org-roam-mode)
+    (setq org-roam-directory note-dir)
+    (setq org-roam-db-location (concat note-dir "/org-roam.db")))
+  (when (fboundp 'deft)
+    (setq deft-directory note-dir)
+    )
+  (when (fboundp 'denote)
+    (setq denote-directory note-dir)
+    )
+  
+  )
+
+
+(add-hook 'notebook-after-open-hook #'eye-setup-org-dirs)
+(add-hook 'notebook-after-open-hook #'eye-setup-capture-template)
+
+
+;;;; org-bullets
+;; (eye-install-packages '(("org-bullets" . "https://github.com/sabof/org-bullets.git")))
+(eye/use-package
+ 'org-bullets
+ :load-path "org-bullets"
+ :command '(org-bullets-mode)
+ :config
+ (progn
+   ;; find emoji list here: http://unicode.org/emoji/charts/full-emoji-list.html#1f644
+   ;; (setq org-bullets-bullet-list '("◉" "☯" "○" "☯" "✸" "☯" "✿" "☯" "✜" "☯" "◆" "☯" "▶"))
+   ;; (setq org-bullets-bullet-list '("◉" "☯" "✿" "☯" "✸" "☯" "✿" "☯" "✜" "☯" "◆" "☯" "▶" "○"))
+   ;; (setq org-bullets-bullet-list '("☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯" "☯"))
+   ;; (setq org-bullets-bullet-list '("⚫" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•" "•")) ;; too small?
+   ;; (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫" "⚫")) ;; #+26AB
+   ;; (setq org-bullets-bullet-list '("☰" "◆" "○" "◆" "○" "◆" "○" "◆" "○" "◆" "○" "◆" "○"))
+   ;; U+24B6++++
+   ;; (setq org-bullets-bullet-list '("Ⓐ" "Ⓑ" "Ⓒ" "Ⓓ" "Ⓔ" "Ⓕ" "Ⓖ" "Ⓗ" "Ⓘ" "Ⓙ"))
+   ;; U+2460+++
+   ;; (setq org-bullets-bullet-list '("①" "②" "③" "④" "⑤" "⑥" "⑦" "⑧" "⑨" "⑩" "⑪" "⑫"))
+   ;; (setq org-bullets-bullet-list '("☰" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶" "▶"))
+   ;; (setq org-bullets-bullet-list '("☰" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆" "◆"))
+   (setq org-bullets-bullet-list '("✿" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" ))
+   
+   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
    ))
 
 
 
-(defun eye/org-add-sibling-headline ()
-  "创建同级heading，当折叠的情况下，到不了最后位置，要用org-show-entry执行一下"
-  (interactive)
-  (let* ((level nil))
-    (if (not (org-element-property :title (org-element-at-point)))
-        (org-previous-visible-heading 1))
+;;;; plantuml
+;; must set java.exe path
+(eye/use-package 'plantuml-mode
+                 :load-path "plantuml-mode"
+                 :command '(plantuml-mode)
+                 :init
+                 (progn
+                   (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/bin/plantuml.jar"))
+                   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+                   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
-    (setq level (org-element-property :level (org-element-at-point)))
-    (when level
-      (org-show-subtree)
-      (org-end-of-subtree)
-      (newline)
-      (dotimes (_ level) (insert "*"))
-      (insert " ")
-      )
-    ))
+                   )
+                 :config
+                 (progn
+                   (setq plantuml-jar-path "~/.emacs.d/bin/plantuml.jar")
+                   (setq plantuml-default-exec-mode 'jar)
+                   ;; Enable plantuml-mode for PlantUML files
+                   (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+                   ;; (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 
-(defun eye/org-add-child-headline ()
-  "创建子级heading，当折叠的情况下，到不了最后位置，要用org-show-entry执行一下"
-  (interactive)
-  (let* ((level nil))
-    (if (not (org-element-property :title (org-element-at-point)))
-        (org-previous-visible-heading 1))
+                   ))
 
-    (setq level (org-element-property :level (org-element-at-point)))
-    (when level
-      (org-show-subtree)
-      (org-end-of-subtree)
-      (newline)
-      (dotimes (_ (+ 1 level)) (insert "*"))
-      (insert " ")
-      )
-    ))
+;;;; htmlize
+(eye/use-package 'htmlize
+:ensure t
+:load-path '("htmlize" "emacs-htmlize"))
 
 
-;; 禁用鼠标点击时打开链接
-(setq org-mouse-1-follows-link nil) ;; 不起作用
-(setq mouse-1-click-follows-link nil) ;; 起作用
-(define-key org-mouse-map [mouse-2] #'ignore) ;; 中键
-(define-key org-mouse-map [mouse-3] #'org-open-at-mouse) ;; 右键
-
-
-(defun eye/export-org-to-docx (&optional filename auto-open)
-  (interactive)
-  (if (executable-find "pandoc")
-      (let* ((org-file-name (or filename (buffer-name)))
-             (docx-file (concat (file-name-sans-extension org-file-name) ".docx")))
-        (save-buffer)
-        (when (file-exists-p docx-file) (delete-file docx-file))
-        (shell-command (format "pandoc %s -o %s --reference-doc=template.docx"
-                               org-file-name
-                               docx-file
-                               ))
-        (if auto-open (org-open-file docx-file))
-        (message "Convert finish: %s" docx-file)
-        docx-file
-        )
-    (message "No pandoc found!")
-    )
+;;;; iscroll
+(when is-gui
+  ;; 支持图片滚动
+  ;; 用good-scroll也支持图片滚动，不需要同时用两个包
+  ;; 2021-12-15: 用iscoll更稳定一些，good-scroll可能是卡死
+  (eye/use-package
+   'iscroll
+   :ensure t
+   :load-path "iscroll"
+   :config
+   (progn
+     (iscroll-mode 1)
+     ))
   )
 
-(defun eye/export-org-to-docx-with-image (open-docx)
-  (interactive)
-  (let* ((filename (buffer-name))
-         (base-name (file-name-sans-extension filename))
-         (temp-file (concat base-name ".docx.org"))
-         )
-    (with-temp-buffer
-      (insert-file-contents filename)
-      ;; replace file:~ to actual home path
-      (beginning-of-buffer)
-      (replace-string "[[file:~/"
-                      (concat "[[file:"
-                              (subst-char-in-string
-                               ?\\ ?/
-                               (getenv "HOME"))
-                              "/"))
-
-      ;; replace file_s.png]] to file.png]]
-      (beginning-of-buffer)
-      (replace-string "_s.png]]" ".png]]")
-
-      ;; write to temp file
-      (write-file temp-file)
-      )
-
-    ;; convert temp file
-    (eye/export-org-to-docx temp-file open-docx)
-    (when (file-exists-p temp-file) (delete-file temp-file))
-    ))
-
-(defun eye/export-org-to-pdf ()
-  (interactive)
-  (let* (
-         (base-name (file-name-sans-extension (buffer-name)))
-
-         (exe (executable-find "convert_docx_to_pdf"))
-         (docx-file (format "%s/%s.docx.docx"
-                            (file-name-directory (buffer-file-name))
-                            base-name
-                            ))
-         (pdf-file (format "%s/%s.pdf"
-                           (file-name-directory (buffer-file-name))
-                           base-name
-                           ))
-         (cmd (format "%s %s %s" exe
-                      (url-encode-url docx-file)
-                      (url-encode-url pdf-file)))
-         )
-
-    (eye/export-org-to-docx-with-image nil)
-    (if (file-exists-p docx-file)
-        (progn
-          (shell-command cmd nil nil)
-          (org-open-file pdf-file)
-          (message "Convert to pdf finished."))
-      (message "docx file not found!")
-      )
-    ))
-
-
-(defun eye/copy-org-id-link ()
-  (interactive)
-  (let* ((id (org-id-copy))
-         (title (org-element-property :title (org-element-at-point)))
-         (org-link "")
-         )
-    ;; (setq org-link (format "[[id:%s][%s]]" id title))
-    ;; 由于默认的[[id:xxxx]]在大的journals文件中可能会卡住emacs或者报错，这里使用pos:
-    (setq org-link (format "[[pos:%s][%s]]" (s-left 8 id) title))
-    (kill-new org-link)
-    (save-buffer)
-    (message "Copied link: %s" org-link)
-    )
-  )
-
-;; @See https://hungyi.net/posts/copy-org-mode-url/
-(defun eye/copy-org-link-at-point ()
-  "Copies the URL from an org link at the point"
-  (interactive)
-  (let ((plain-url (url-get-url-at-point)))
-    (if plain-url
-        (progn
-          (kill-new plain-url)
-          (message (concat "Copied: " plain-url)))
-      (let* ((link-info (assoc :link (org-context)))
-             (text (when link-info
-                     (buffer-substring-no-properties
-                      (or (cadr link-info) (point-min))
-                      (or (caddr link-info) (point-max))))))
-        (if (not text)
-            (error "Oops! Point isn't in an org link")
-          (string-match org-link-bracket-re text)
-          (let ((url (substring text (match-beginning 1) (match-end 1))))
-            (kill-new url)
-            (message (concat "Copied: " url))))))))
-
-
-
-
-;;;; notebook switch
-(defun eye/switch-notebook ()
-  "切换笔记本环境"
-  (interactive)
-  (let* ((notebook-list (s-split "\n" (get-string-from-file "~/.emacs.d/.notedirlist")))
-         (notebook-dir (ivy-read "Select notebook: " notebook-list)))
-    (f-write-text notebook-dir 'utf-8 "~/.notedir")
-    (setq eye-org-file-attach-base-dir "~/attach_ts")
-
-    (eye-setup-org-dirs)
-
-
-    (when (fboundp 'org-roam-mode)
-      (setq org-roam-directory notebook-dir)
-      (setq org-roam-db-location (concat notebook-dir "/org-roam.db")))
-    (when (fboundp 'deft)
-      (setq deft-directory notebook-dir)
-      )
-    (when (fboundp 'denote)
-      (setq denote-directory notebook-dir)
-      )
-
-
-    (message "Switched notebook %s." notebook-dir)
-
-    ))
-
-(require 'init-agenda)
-(require 'init-ox-hugo)
-
-(require 'init-org-roam)
 
 (provide 'init-org)
+
+

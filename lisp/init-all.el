@@ -68,6 +68,7 @@
             (counsel-imenu . "counsel")
             (counsel-rg . "counsel")
             (counsel-git . "counsel")
+            (counsel-read-directory-name . "counsel")
             (counsel-describe-function . "counsel")
             (counsel-describe-variable . "counsel")
             (counsel-describe-face . "counsel")
@@ -414,7 +415,10 @@
 ;; (require 'init-local-html)
 
 ;; ))
-
+;; (run-with-idle-timer 2 nil
+                     ;; (lambda ()
+                       ;; (require 'init-org)))
+(require 'init-org)
 
 ;; Local Variables:
 ;; coding: utf-8
