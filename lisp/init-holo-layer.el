@@ -5,7 +5,7 @@
                  :load-path "holo-layer"
                  :config
                  (progn
-                   (setq holo-layer-cursor-color "dark red")
+                   (setq holo-layer-cursor-color "#50aeee")
                    (setq holo-layer-enable-cursor-animation t)
                    (setq holo-layer-hide-mode-line t)
                    (run-with-idle-timer 1 nil (lambda ()
