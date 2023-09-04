@@ -217,8 +217,8 @@
    :config
    (progn
      ;; 绑定上下翻页键也支持像素滚动
-     (global-set-key [next] #'good-scroll-up-full-screen)
-     (global-set-key [prior] #'good-scroll-down-full-screen)
+     ;; (global-set-key [next] #'good-scroll-up-full-screen)
+     ;; (global-set-key [prior] #'good-scroll-down-full-screen)
      )
    )
   )

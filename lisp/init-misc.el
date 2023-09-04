@@ -1,7 +1,7 @@
 (defun eye-starup-mode-setup ()
   (global-auto-revert-mode t)
   ;; (show-paren-mode t) ;;高亮匹配的括号
-  ;; (electric-pair-mode t) ;;自动输出成对括号
+  (electric-pair-mode t) ;;自动输出成对括号
   (delete-selection-mode t)
   (global-visual-line-mode t)
   ;; (global-hl-line-mode t)
@@ -57,20 +57,6 @@
 ;; 最小保留多少宽度
 (setq display-line-numbers-width 5)
 
-
-;; 半屏滚动
-(defun scroll-half-page-down ()
-  "scroll down half the page"
-  (interactive)
-  (scroll-down (/ (window-body-height) 2)))
-
-(defun scroll-half-page-up ()
-  "scroll up half the page"
-  (interactive)
-  (scroll-up (/ (window-body-height) 2)))
-
-(global-set-key "\M-n" 'scroll-half-page-up)
-(global-set-key "\M-p" 'scroll-half-page-down)
 
 ;; (menu-bar-mode -1)
 ;; (tool-bar-mode -1)

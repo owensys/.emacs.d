@@ -349,6 +349,8 @@
 (global-set-key (kbd "C-S-n") 'make-frame-command)
 (global-set-key (kbd "C-S-f") 'eye-search-in-dir)
 (global-set-key (kbd "<f6>") 'org-agenda)
+(global-set-key (kbd "<next>") 'scroll-half-page-up)
+(global-set-key (kbd "<prior>") 'scroll-half-page-down)
 
 (bind-key messages-buffer-mode-map "C-k C-k" #'clear-messages-buffer)
 

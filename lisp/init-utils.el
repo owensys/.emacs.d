@@ -1590,4 +1590,17 @@ the `format' call in a list."
   (equal (frame-parameter nil 'background-mode) 'dark)
   )
 
+;; 半屏滚动
+(defun scroll-half-page-down ()
+  "scroll down half the page"
+  (interactive)
+  (scroll-down 3));; (/ (window-body-height) 2)))
+
+(defun scroll-half-page-up ()
+  "scroll up half the page"
+  (interactive)
+  (scroll-up 3));; (/ (window-body-height) 2)))
+
+
+
 (provide 'init-utils)
