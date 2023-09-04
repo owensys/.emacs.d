@@ -7,6 +7,9 @@
 (add-to-list 'load-path (concat eye-packages-dir "/benchmark-init"))
 (add-to-list 'load-path (concat eye-packages-dir "/f"))
 (add-to-list 'load-path (concat eye-packages-dir "/s"))
+(add-to-list 'load-path (concat eye-packages-dir "/dash"))
+(require 's)
+(require 'f)
 
 (require 'benchmark-init)
 (require 'benchmark-init-modes)
@@ -412,13 +415,11 @@
 ;;;; theme
 (require 'init-theme)
 
+(require 'init-holo-layer)
+(require 'init-org)
+
 ;; (require 'init-local-html)
 
-;; ))
-;; (run-with-idle-timer 2 nil
-                     ;; (lambda ()
-                       ;; (require 'init-org)))
-(require 'init-org)
 
 ;; Local Variables:
 ;; coding: utf-8

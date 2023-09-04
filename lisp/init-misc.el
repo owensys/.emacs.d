@@ -166,12 +166,15 @@
 
 (add-hook 'after-init-hook #'maximize-frame)
 
-(defun fullscreen-toggle ()
+(defun fullscreen-toggle (&optional fulls)
   "Toggle fullscreen/maximize status."
   (interactive)
-  (if (equal 'fullboth (frame-parameter nil 'fullscreen))
-      (maximize-frame)
-    (set-frame-parameter nil 'fullscreen 'fullboth)))
+  (if fulls
+      (set-frame-parameter nil 'fullscreen 'fullboth)
+    (progn
+      (if (equal 'fullboth (frame-parameter nil 'fullscreen))
+          (maximize-frame)
+        (set-frame-parameter nil 'fullscreen 'fullboth)))))
 
 
 (when is-gui
