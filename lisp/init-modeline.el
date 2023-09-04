@@ -1,3 +1,7 @@
+(eye/use-package 'shrink-path
+                 :load-path "shrink-path"
+                 :ensure t)
+
 ;; write a function to do the spacing
 (defun simple-mode-line-render (left right)
   "Return a string of `window-width' length containing LEFT, and RIGHT
@@ -7,15 +11,20 @@
     ;; 第一层format 产生"%s %50s"
     (format (format " %%s %%%ds " available-width) left right)))
 
+(defun eye--current-file-path ()
+  (if (fboundp 'shrink-path-file)
+      (shrink-path-file (buffer-file-name))
+    (buffer-file-name)))
 
  ;;;; header-line
 (defun eye-header-line-setup(&optional theme)
   (setq-default header-line-format
                 '((:eval (simple-mode-line-render
                           ;; left
-                          (format-mode-line (concat (if buffer-file-name (buffer-file-name) "%b")
+                          (format-mode-line (concat (if buffer-file-name (eye--current-file-path) "%b")
                                                     " "
                                                     (if buffer-read-only "🔒")
+                                                    " %n"
                                                     ))
                           ;; right
                           (format-mode-line (concat (format "%s  " buffer-file-coding-system)
