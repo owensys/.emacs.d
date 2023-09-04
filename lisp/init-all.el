@@ -44,11 +44,12 @@
 (require 'init-keys)
 
 ;;;; imenu
-(require 'imenu)
+;; (require 'imenu) ;; is autoload function
 ;; 自定义menu
 (setq imenu-auto-rescan t)
 ;;;; Elisp
 (defun imenu-elisp-sections ()
+  (require 'imenu)
   (setq imenu-prev-index-position-function nil)
   ;; imenu-generic-expression is locale, must use hook
   (add-to-list 'imenu-generic-expression '("sections" "^;;;; \\(.+\\)$" 1) t))

@@ -27,8 +27,8 @@ must use expand-file-name, use absolute path")
 
 ;; 必须加到load-path中，否则autoload函数会找不到，调用出错
 (add-to-list 'load-path eye-packages-dir)
-(add-to-list 'load-path (concat eye-packages-dir "/pfuture"))
-(require 'pfuture)
+;; (add-to-list 'load-path (concat eye-packages-dir "/pfuture"))
+;; (require 'pfuture)
 
 (setq eye-git-bin (executable-find "git"))
 (setq eye-wget-bin (executable-find "wget"))
