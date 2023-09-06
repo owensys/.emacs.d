@@ -121,7 +121,7 @@
   (eye-bind-ctrl-key modemap "bbe" #'end-of-buffer)
   (eye-bind-ctrl-key modemap "bbk" #'kill-this-buffer)
   (eye-bind-ctrl-key modemap "bbf" #'narrow-to-defun)
-  (eye-bind-ctrl-key modemap "bbg" #'narrow-to-region)
+  (eye-bind-ctrl-key modemap "bbr" #'narrow-to-region)
   (eye-bind-ctrl-key modemap "bbl" #'org-narrow-to-block)
   (eye-bind-ctrl-key modemap "bbo" #'org-narrow-to-subtree)
   (eye-bind-ctrl-key modemap "bbs" #'save-buffer)
