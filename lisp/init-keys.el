@@ -145,8 +145,8 @@
   ;;(wkey "C-f C-d" "dired")
 
   ;; window
-  (eye-bind-ctrl-key modemap "2" 'split-window-below "split hor")
-  (eye-bind-ctrl-key modemap "3" 'split-window-right "split ver")
+  (eye-bind-ctrl-key modemap "2" 'split-window-below-and-switch-to-scratch "split hor")
+  (eye-bind-ctrl-key modemap "3" 'split-window-right-and-switch-to-scratch "split ver")
   (eye-bind-ctrl-key modemap "1" 'delete-other-windows)
   (eye-bind-ctrl-key modemap "0" 'delete-window)
   ;;(wkey "C-w C-w" "window")

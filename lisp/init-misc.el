@@ -12,6 +12,10 @@
 
 ;; enable narrow-to-region
 (put 'narrow-to-region 'disabled nil)
+;; narrow-to-region后自动取消选中
+(defun narrow-to-region-pop-mark (_ _) (pop-mark))
+(advice-add #'narrow-to-region :after #'narrow-to-region-pop-mark)
+
 
 ;; save clipboard contents into kill-ring before replace theme
 (setq save-interprogram-paste-before-kill t)
