@@ -1603,19 +1603,4 @@ the `format' call in a list."
 
 
 
-(defun split-window-right-and-switch-to-scratch()
-  (interactive)
-  (split-window-right)
-  (other-window 1)
-  (switch-to-buffer "*scratch*"))
-
-(defun split-window-below-and-switch-to-scratch()
-  (interactive)
-  (split-window-below)
-  (other-window 1)
-  (switch-to-buffer "*scratch*"))
-
-
-
-
 (provide 'init-utils)
