@@ -36,7 +36,7 @@
 
 (defun eye-mode-line-setup (&optional theme)
   (setq-default mode-line-format "")
-  (set-face-attribute 'mode-line nil :height 0.1 :background "dark red")
+  (set-face-attribute 'mode-line nil :height 0.1 :background "#7f5ab6")
   (set-face-attribute 'mode-line-inactive nil :height 0.1)
   )
 
