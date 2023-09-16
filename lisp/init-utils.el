@@ -1602,5 +1602,14 @@ the `format' call in a list."
   (scroll-up 3));; (/ (window-body-height) 2)))
 
 
+(defun eye/empty-trash ()
+  "清空回收站"
+  (interactive)
+  (cond
+   ((memq system-type '(windows-nt cygwin ms-dos))
+     (async-shell-command-no-window "powershell -Command Clear-RecycleBin -Force;"))
+   (t nil)
+   ))
+
 
 (provide 'init-utils)
