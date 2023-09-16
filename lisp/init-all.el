@@ -421,7 +421,7 @@
 ;;;; theme
 (require 'init-theme)
 
-;; (require 'init-holo-layer)
+(require 'init-holo-layer)
 (require 'init-org)
 
 ;; (require 'init-local-html)

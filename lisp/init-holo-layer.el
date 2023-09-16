@@ -2,14 +2,15 @@
 ;; must use fullscreen
 (eye/use-package 'holo-layer
                  :ensure t
-                 :load-path "holo-layer"
+                 :load-path "holo-layer-self"
                  :config
                  (progn
                    (setq holo-layer-cursor-color "#50aeee")
                    (setq holo-layer-enable-cursor-animation t)
                    (setq holo-layer-hide-mode-line t)
+		   
                    (run-with-idle-timer 1 nil (lambda ()
-                                                (fullscreen-toggle t)
+                                                ;; (fullscreen-toggle t)
                                                 (holo-layer-enable)))
                    ))
 
