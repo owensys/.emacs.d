@@ -275,6 +275,7 @@
 (eye/use-package
  'popper
  :load-path "popper"
+ :ensure t
  :command '(popper-mode popper-toggle-latest popper-cycle popper-toggle-type)
  :init
  (progn
@@ -285,6 +286,7 @@
            "\\*color-rg\\*"
            help-mode
            compilation-mode))
+   (setq popper-window-height 20)
    )
  :config
  (progn
