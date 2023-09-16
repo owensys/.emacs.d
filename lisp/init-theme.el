@@ -24,6 +24,8 @@
 (defun eye-after-load-theme-setup (theme)
   (message "setup after load theme")
   ;; (set-face-attribute 'mode-line nil :background (face-attribute 'default :background))
+  (set-face-attribute 'tab-bar-tab nil :foreground "gray80" :background  "SkyBlue4")
+  (set-face-attribute 'tab-bar-tab-inactive nil)
   (if (eye-current-theme-is-dark)
       (progn
         (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
