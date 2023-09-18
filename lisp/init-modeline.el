@@ -36,14 +36,50 @@
 
 (defun eye-mode-line-setup (&optional theme)
   (setq-default mode-line-format nil)
+  (setq-default header-line-format nil)
   ;; (set-face-attribute 'mode-line nil :height 0.1 :background "#7f5ab6")
   ;; (set-face-attribute 'mode-line-inactive nil :height 0.1)
   )
 
 (add-hook 'after-init-hook #'eye-mode-line-setup)
-(add-hook 'after-init-hook #'eye-header-line-setup)
+;; (add-hook 'after-init-hook #'eye-header-line-setup)
 (add-hook 'load-theme-after-hook #'eye-mode-line-setup)
-(add-hook 'load-theme-after-hook #'eye-header-line-setup)
+;; (add-hook 'load-theme-after-hook #'eye-header-line-setup)
+
+
+(eye/use-package 'awesome-tray
+                 :load-path "awesome-tray"
+                 :ensure t
+                 :config
+                 (progn
+                   (defface tray-module-custom-face
+                     '((((background light))
+	                    :foreground "#00a400" :bold t)
+	                   (t
+	                    :foreground "green3" :bold t))
+                     "custom info face."
+                     :group 'awesome-tray)
+
+                   (defun tray-module-encode-info ()
+                     (format "%s" buffer-file-coding-system))
+                   (add-to-list 'awesome-tray-module-alist
+		                        '("encode" . (tray-module-encode-info tray-module-custom-face)))
+                   
+                   (defun tray-module-readonly-status-info ()
+                     (if buffer-read-only "🔒" ""))
+                   (add-to-list 'awesome-tray-module-alist
+                                '("ro" . (tray-module-readonly-status-info tray-module-custom-face)))
+
+                   (defun tray-module-shrink-path ()
+                     (if buffer-file-name (eye--current-file-path) (format-mode-line "%b")))
+                   (add-to-list 'awesome-tray-module-alist
+		                        '("shrink-path" . (tray-module-shrink-path tray-module-custom-face)))
+                   
+                   
+                   ;; Enable awesome tray
+                   (setq awesome-tray-active-modules '("ro" "shrink-path" "mode-name" "encode"))
+                   (awesome-tray-mode t)
+                   ))
 
 
 (provide 'init-modeline)
