@@ -160,6 +160,7 @@
   (eye-bind-ctrl-key modemap "wtr" 'tab-rename)
   (eye-bind-ctrl-key modemap "wts" 'tab-bar-select-tab-by-name)
   ;; ;;(wkey "C-w C-t" "tab")
+  (eye-bind-ctrl-key modemap "ww" 'holo-layer-jump-to-window)
 
   (eye-bind-ctrl-key modemap "tt" 'centaur-tabs-mode)
   (eye-bind-ctrl-key modemap "tc" 'treemacs)
