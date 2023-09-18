@@ -52,32 +52,30 @@
                  :ensure t
                  :config
                  (progn
-                   (defface tray-module-custom-face
-                     '((((background light))
-	                    :foreground "#00a400" :bold t)
-	                   (t
-	                    :foreground "green3" :bold t))
-                     "custom info face."
+                   ;; redefine mode name face
+                   (defface awesome-tray-module-mode-name-face
+                     '((((background light)) :foreground "DodgerBlue1" :bold t)
+                       (t :foreground "DeepSkyBlue1" :bold t))
+                     "Awesome tray mode name face."
                      :group 'awesome-tray)
-
-                   (defun tray-module-encode-info ()
-                     (format "%s" buffer-file-coding-system))
-                   (add-to-list 'awesome-tray-module-alist
-		                        '("encode" . (tray-module-encode-info tray-module-custom-face)))
                    
                    (defun tray-module-readonly-status-info ()
                      (if buffer-read-only "🔒" ""))
                    (add-to-list 'awesome-tray-module-alist
-                                '("ro" . (tray-module-readonly-status-info tray-module-custom-face)))
+                                '("ro" . (tray-module-readonly-status-info awesome-tray-green-face)))
 
                    (defun tray-module-shrink-path ()
                      (if buffer-file-name (eye--current-file-path) (format-mode-line "%b")))
                    (add-to-list 'awesome-tray-module-alist
-		                        '("shrink-path" . (tray-module-shrink-path tray-module-custom-face)))
-                   
+		                        '("shrink-path" . (tray-module-shrink-path awesome-tray-green-face)))
+
+                   (defun tray-module-encode-info ()
+                     (format "%s" buffer-file-coding-system))
+                   (add-to-list 'awesome-tray-module-alist
+		                        '("encode" . (tray-module-encode-info awesome-tray-green-face)))
                    
                    ;; Enable awesome tray
-                   (setq awesome-tray-active-modules '("ro" "shrink-path" "mode-name" "encode"))
+                   (setq awesome-tray-active-modules '("ro" "shrink-path" "encode" "mode-name"))
                    (awesome-tray-mode t)
                    ))
 
