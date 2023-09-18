@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: cond
+# key: cond
+# --
+(cond
+($0 CONDITION BODY)
+(CONDITION BODY)
+(CONDITION BODY)
+(t nil)
+)
