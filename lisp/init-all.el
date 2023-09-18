@@ -309,6 +309,11 @@
  :init (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
  )
 
+;;;; yasnippets
+(eye/use-package
+ 'yasnippet
+ :load-path "yasnippet"
+ :command '(yas-global-mode))
 
 ;;;; lsp-bridge
 (eye/use-package
