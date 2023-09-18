@@ -52,22 +52,14 @@
                  :ensure t
                  :config
                  (progn
-                   ;; redefine mode name face
-                   (defface awesome-tray-module-mode-name-face
-                     '((((background light)) :foreground "DodgerBlue1" :bold t)
-                       (t :foreground "DeepSkyBlue1" :bold t))
-                     "Awesome tray mode name face."
-                     :group 'awesome-tray)
-                   
                    (defun tray-module-readonly-status-info ()
                      (if buffer-read-only "🔒" ""))
                    (add-to-list 'awesome-tray-module-alist
                                 '("ro" . (tray-module-readonly-status-info awesome-tray-green-face)))
 
-                   (defun tray-module-shrink-path ()
-                     (if buffer-file-name (eye--current-file-path) (format-mode-line "%b")))
-                   (add-to-list 'awesome-tray-module-alist
-		                        '("shrink-path" . (tray-module-shrink-path awesome-tray-green-face)))
+                   ;;; file pat
+                   (setq awesome-tray-file-path-full-dirname-levels 10)
+                   (setq awesome-tray-file-path-show-filename t)
 
                    (defun tray-module-encode-info ()
                      (format "%s" buffer-file-coding-system))
@@ -75,8 +67,16 @@
 		                        '("encode" . (tray-module-encode-info awesome-tray-green-face)))
                    
                    ;; Enable awesome tray
-                   (setq awesome-tray-active-modules '("ro" "shrink-path" "encode" "mode-name"))
+                   (setq awesome-tray-active-modules '("ro" "file-path" "encode" "mode-name"))
                    (awesome-tray-mode t)
+                   
+                   ;; redefine mode name face
+                   (defface awesome-tray-module-mode-name-face
+                     '((((background light)) :foreground "DodgerBlue1" :bold t)
+                       (t :foreground "DeepSkyBlue1" :bold t))
+                     "Awesome tray mode name face."
+                     :group 'awesome-tray)
+                   
                    ))
 
 
