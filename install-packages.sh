@@ -179,6 +179,6 @@ inst "good-scroll" "https://github.com/io12/good-scroll.el.git" "a7ffd5"
 inst "ctrlf" "https://github.com/raxod502/ctrlf.git" "9b4cf"
 inst "popper" "https://github.com/karthink/popper.git" "a93ff3"
 inst "holo-layer" "https://github.com/manateelazycat/holo-layer" "94ba9"
-
+inst "blink-search" "https://github.com/manateelazycat/blink-search.git" "4ce65"
 
 echo "All package install finished."

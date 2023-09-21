@@ -162,6 +162,9 @@
   ;; ;;(wkey "C-w C-t" "tab")
   (eye-bind-ctrl-key modemap "ww" 'holo-layer-jump-to-window)
 
+  (eye-bind-ctrl-key modemap "ws" 'shrink-window)
+  (eye-bind-ctrl-key modemap "we" 'enlarge-window)
+
   (eye-bind-ctrl-key modemap "tt" 'centaur-tabs-mode)
   (eye-bind-ctrl-key modemap "tc" 'treemacs)
   (eye-bind-ctrl-key modemap "tl" 'global-display-line-numbers-mode "linenum")
@@ -316,6 +319,7 @@
 
 
   (bind-key modemap "M-x" 'my-M-x)
+  (bind-key modemap "M-z" 'blink-search)
   (bind-key modemap "C-x C-f" 'my-find-file)
   (bind-key modemap "C-x b" 'my-switch-buffer)
   (bind-key modemap "M-SPC" 'set-mark-command)

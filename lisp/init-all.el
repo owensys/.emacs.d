@@ -386,6 +386,13 @@
    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
 
 
+;;;; blink-search
+;; fd: https://github.com/sharkdp/fd/releases
+;; pip3.exe install epc requests
+(eye/use-package 'blink-search
+                 :load-path "blink-search"
+                 :ensure t)
+
 ;; 使用 emacsclient 需要先启动服务
 (require 'server)
 ;; (if is-org
