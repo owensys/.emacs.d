@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: vue
+# key: vue
+# --
+<template>
+$0
+</template>
+
+
+<script setup>
+
+</script>
+
+
+<style scoped>
+
+</style>

@@ -357,7 +357,7 @@
  :command '(symbol-overlay-mode symbol-overlay-put)
  :config
  (progn
-   (symbol-overlay-mode)
+   ;; (symbol-overlay-mode)
    ;; clear default keys
    (define-key symbol-overlay-map (kbd "i") nil)
    (define-key symbol-overlay-map (kbd "h") nil)
@@ -393,6 +393,17 @@
                  :load-path "blink-search"
                  :ensure t)
 
+;;;; sort-tab
+;; (eye/use-package
+;;  'sort-tab
+;;  :ensure t
+;;  :load-path "sort-tab"
+;;  :config
+;;  (progn
+;;    (sort-tab-mode 1)
+;;    ))
+
+
 ;; 使用 emacsclient 需要先启动服务
 (require 'server)
 ;; (if is-org
@@ -407,7 +418,9 @@
 ;;;; orgmode
 ;; idle load
 (require 'init-programming)
+(require 'init-web)
 (require 'init-cpp)
+(require 'init-tiddly)
 
 (run-with-idle-timer 2 nil (lambda () (require 'init-tramp)))
 (run-with-idle-timer 2 nil (lambda () (require 'init-magit)))
