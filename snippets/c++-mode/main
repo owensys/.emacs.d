@@ -3,7 +3,17 @@
 # key: main
 # --
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <memory>
 #include <iostream>
+#include <string>
+#include <vector>
+#include <list>
+#include <mutex>
+
+using std::cout;
+using std::endl;
 
 int main(int argc, char* argv[])
 {
