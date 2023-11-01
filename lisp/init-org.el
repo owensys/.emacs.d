@@ -352,9 +352,9 @@
  :config
  (progn
    (setq deft-recursive t)
-   (setq deft-use-filename-as-title nil) ;;是否把文件名作为标题
+   (setq deft-use-filename-as-title t) ;;是否把文件名作为标题
    (setq deft-extensions '("org"))
-   (setq deft-file-limit 1000) ;;最多显示多少文件，nil不限制
+   (setq deft-file-limit 200) ;;最多显示多少文件，nil不限制
    (setq deft-filter-only-filenames t) ;;只搜索文件名
    ;;(setq deft-filter-only-filenames nil) ;;搜索标题
    (setq deft-auto-save-interval 0) ;;是否自动保存从deft打开的文件
@@ -362,6 +362,13 @@
    (setq deft-default-extension "org")
    ;; (setq deft-strip-summary-regexp ".*")
    ;; (setq deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n")
+   (setq deft-strip-title-regexp
+         (concat "\\(?:^%+"
+                 "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
+                 "\\|^#\\+TITLE: *"
+                 "\\|^[#* ]+"
+                 "\\|-\\*-[[:alpha:]]+-\\*-"
+                 "\\|^Title:[	 ]*\\|#+$\\)"))
    (setq deft-strip-summary-regexp
 	 (concat "\\("
 		 "[\n\t]" ;; blank
