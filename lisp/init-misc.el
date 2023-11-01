@@ -97,6 +97,14 @@
 
 (setq truncate-lines nil) ;; t--不自动折行 nil--折行
 
+;; optimized for long line, see https://emacs-china.org/t/topic/25811/8
+(setq-default bidi-display-reordering nil)
+(setq bidi-inhibit-bpa t
+      long-line-threshold 1000
+      large-hscroll-threshold 1000
+      syntax-wholeline-max 1000)
+
+
 ;; Fix load slow, https://github.com/raxod502/radian/issues/180
 (when tool-bar-mode (tool-bar-mode -1)) ;; 禁用工具栏
 (when menu-bar-mode (menu-bar-mode -1)) ;; 禁用菜单栏
@@ -107,14 +115,15 @@
 
 ;; (setq frame-title-format "Ems") ;; 自定义标题栏
 ;; show full file path
-;; (setq frame-title-format
-;;       '("EMS - "
-;;         (:eval (if buffer-file-name (buffer-file-name) "%b"))
-;;         " "
-;;         (:eval (if buffer-read-only "🔒"))
-;;         " "
-;;         "%n"))
-(setq frame-title-format "EMS")
+(setq frame-title-format
+      '("EMS - "
+        (:eval (if buffer-file-name (buffer-file-name) "%b"))
+        " "
+        (:eval (if buffer-read-only "🔒"))
+        " "
+        "%n"))
+;; (setq frame-title-format "Ems - If I looked compared to others far, is because I stand on giant’s shoulder. — Newton")
+;; (setq frame-title-format nil)
 
 
 ;; 去掉窗口边缘和分割窗口时分割条的边缘
