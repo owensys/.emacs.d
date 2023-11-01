@@ -1611,5 +1611,17 @@ the `format' call in a list."
    (t nil)
    ))
 
+(defun is-windows ()
+  (if (memq system-type '(cygwin windows-nt ms-dos))
+      t
+    nil))
+
+
+(defun to-unix-path(path)
+  (subst-char-in-string ?\\ ?/ path))
+
+(defun to-windows-path(path)
+  (subst-char-in-string ?/ ?\\ path))
+
 
 (provide 'init-utils)
