@@ -5,7 +5,7 @@
  :load-path "denote"
  :config
  (progn
-   (setq denote-directory (s-trim (get-string-from-file "~/.emacs.d/.denote-dir")))
+   (setq denote-directory (s-trim (get-string-from-file "~/.emacs.d/.note-dir")))
    (setq denote-known-keywords '("emacs" "qt"
                                  "cpp" "python" "ruby" "java" "dart" "php"
                                  "english" "project" "ideas" "database"

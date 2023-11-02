@@ -94,6 +94,16 @@
    ;; 使counsel-rg只需要2个字符就可以开始实时搜索
    (add-to-list 'ivy-more-chars-alist '(counsel-rg . 2))
 
+   (when is-windows
+   ;;; redefine function, fix windows encoding
+     (defun counsel-git-cands (dir)
+       (let ((default-directory dir))
+         (split-string
+          (decode-coding-string (shell-command-to-string counsel-git-cmd) 'utf-8)
+          "\0"
+          t)))
+     )
+
    (when use-fixed-minibuffer-height
      ;; 固定minibuffer 高度
      (setq resize-mini-windows nil)
@@ -420,22 +430,10 @@
 (require 'init-programming)
 (require 'init-web)
 (require 'init-cpp)
-(require 'init-tiddly)
+
 
 (run-with-idle-timer 2 nil (lambda () (require 'init-tramp)))
 (run-with-idle-timer 2 nil (lambda () (require 'init-magit)))
-;; (require 'init-treemacs)
-
-;; (require 'init-org)
-;;(require 'init-session)
-;; (require 'init-denote)
-;; (require 'init-eshell)
-;; (require 'init-aweshell)
-;; (require 'init-writeroom)
-;; (require 'init-eaf)
-;; (require 'init-emms)
-;; (require 'init-mpvi)
-;; (require 'init-dashboard)
 
 ;;;; bing-dict
 (eye/use-package
@@ -448,8 +446,19 @@
 
 (require 'init-holo-layer)
 (require 'init-org)
+(require 'init-denote)
 
+;; (require 'init-tiddly)
 ;; (require 'init-local-html)
+;; (require 'init-treemacs)
+;;(require 'init-session)
+;; (require 'init-eshell)
+;; (require 'init-aweshell)
+;; (require 'init-writeroom)
+;; (require 'init-eaf)
+;; (require 'init-emms)
+;; (require 'init-mpvi)
+;; (require 'init-dashboard)
 
 
 ;; Local Variables:
