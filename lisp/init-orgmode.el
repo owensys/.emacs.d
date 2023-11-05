@@ -1,8 +1,7 @@
 ;;;; org
 (require 'org)
 
-(add-to-list 'auto-mode-alist '("\\.gtd$" . org-mode))
-
+(setq locale-notebook-dir "x:/denote-notes")
 (setq gtd-inbox-path (concat locale-notebook-dir "/org/00-inbox/inbox.org"))          ;; 收集所有东西
 (setq gtd-someday-path (concat locale-notebook-dir "/org/gtd/someday.org"))
 (setq gtd-tickler-path (concat locale-notebook-dir "/org/gtd/tickler.org"))
@@ -122,7 +121,7 @@
 ;;        (deft-files :maxlevel . 2)))
 
 
-(setq org-default-notes-file (expand-file-name "todo.today.org" locale-notebook-dir))
+;; (setq org-default-notes-file (expand-file-name "index.org" locale-notebook-dir))
 
 (define-key org-mode-map (kbd "M-RET") 'org-insert-heading-respect-content)
 (define-key org-mode-map (kbd "C-k") nil)

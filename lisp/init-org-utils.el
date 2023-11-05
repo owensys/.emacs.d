@@ -297,17 +297,19 @@ title 链接库关系图
 
 (defun eye/copy-org-id-link ()
   (interactive)
-  (let* ((id (org-id-copy))
-         (title (org-element-property :title (org-element-at-point)))
-         (org-link "")
-         )
-    ;; (setq org-link (format "[[id:%s][%s]]" id title))
-    ;; 由于默认的[[id:xxxx]]在大的journals文件中可能会卡住emacs或者报错，这里使用pos:
-    (setq org-link (format "[[pos:%s][%s]]" (s-left 8 id) title))
-    (kill-new org-link)
-    (save-buffer)
-    (message "Copied link: %s" org-link)
-    )
+  (save-excursion
+    (goto-char (point-min))
+    (let* ((id (org-id-get-create))
+           (title (org-element-property :title (org-element-at-point)))
+           (org-link "")
+           )
+      ;; (setq org-link (format "[[id:%s][%s]]" id title))
+      ;; 由于默认的[[id:xxxx]]在大的journals文件中可能会卡住emacs或者报错，这里使用pos:
+      (setq org-link (format "[[pos:%s][%s]]" (s-left 8 id) title))
+      (kill-new org-link)
+      (save-buffer)
+      (message "Copied link: %s" org-link)
+      ))
   )
 
 ;; @See https://hungyi.net/posts/copy-org-mode-url/

@@ -494,6 +494,7 @@
 (add-hook 'notebook-after-open-hook #'eye-setup-org-dirs)
 (add-hook 'notebook-after-open-hook #'eye-setup-capture-template)
 
+(require 'init-org-roam)
 
 ;;;; org-bullets
 ;; (eye-install-packages '(("org-bullets" . "https://github.com/sabof/org-bullets.git")))

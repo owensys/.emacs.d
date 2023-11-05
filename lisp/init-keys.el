@@ -5,6 +5,7 @@
  :command '((which-key-mode . "which-key"))
  :config
  (progn
+   (setq which-key-popup-type 'frame)
    (which-key-setup-side-window-bottom)
    (defalias 'wkey 'which-key-add-key-based-replacements)
    ))
@@ -25,7 +26,9 @@
                            forward-char
                            backward-char
                            previous-line
-                           next-line))
+                           next-line
+                           mwheel-scroll
+                           ))
                    )
                  )
 
@@ -299,7 +302,10 @@
   (eye-bind-ctrl-key modemap "oiv" #'org-roam-node-visit)
   (eye-bind-ctrl-key modemap "oir" #'org-roam-node-random)
   (eye-bind-ctrl-key modemap "oib" #'org-roam-buffer-toggle)
-
+  (eye-bind-ctrl-key modemap "ois" #'org-roam-db-sync)
+  (eye-bind-ctrl-key modemap "oiu" #'org-roam-ui-mode)
+  (eye-bind-ctrl-key modemap "oit" #'org-roam-ui-follow-mode)
+  (eye-bind-ctrl-key modemap "oid" #'org-id-get-create)
 
   (unset-mode-key modemap (kbd "C-7"))
   (eye-bind-ctrl-key modemap "77" 'xah-extend-selection)
@@ -313,9 +319,9 @@
   ;; (bind-key modemap "<C-S-tab>" 'tab-bar-switch-to-prev-tab)
   ;; (bind-key modemap "C-S-<iso-lefttab>" 'tab-bar-switch-to-prev-tab)
 
-  (bind-key modemap "<C-tab>" 'centaur-tabs-forward)
-  (bind-key modemap "<C-S-tab>" 'centaur-tabs-backward)
-  (bind-key modemap "C-S-<iso-lefttab>" 'centaur-tabs-backward)
+  (bind-key modemap "<C-tab>" 'sort-tab-select-next-tab)
+  (bind-key modemap "<C-S-tab>" 'sort-tab-select-prev-tab)
+  (bind-key modemap "C-S-<iso-lefttab>" 'sort-tab-select-prev-tab)
 
 
   (bind-key modemap "M-x" 'my-M-x)
@@ -364,10 +370,10 @@
 ;; (global-set-key (kbd "<C-next>") 'centaur-tabs-forward) ;; C- page down
 ;; (global-set-key (kbd "<C-S-next>") 'centaur-tabs-counsel-switch-group) ;; C- page down
 
-(global-set-key (kbd "<C-prior>") 'tab-previous) ;; C- page up
-(global-set-key (kbd "<C-next>") 'tab-next) ;; C- page down
-(global-set-key (kbd "<C-S-prior>") 'tab-bar-new-tab)
-(global-set-key (kbd "<C-S-next>") 'tab-bar-select-tab-by-name) ;; C- page down
+(global-set-key (kbd "<C-prior>") 'sort-tab-select-prev-tab) ;; C- page up
+(global-set-key (kbd "<C-next>") 'sort-tab-select-next-tab) ;; C- page down
+;; (global-set-key (kbd "<C-S-prior>") 'tab-bar-new-tab)
+;; (global-set-key (kbd "<C-S-next>") 'tab-bar-select-tab-by-name) ;; C- page down
 
 ;; (global-set-key (kbd "<C-insert>") 'emms-stop) ;; C- insert
 

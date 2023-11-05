@@ -1,3 +1,5 @@
+(require 'org)
+
 (eye/use-package
  'vertico
  :ensure t
@@ -38,12 +40,11 @@
  :load-path '("f" "s" "dash" "emacsql" "emacsql-sqlite3" "async" "magit/lisp" "compat" "org-roam" "org-roam/extensions")
  :config
  (progn
-   (setq org-roam-database-connector 'sqlite3) ;; fix sqlite3 library was not found
-   (setq org-roam-directory (get-locale-book-dir))
+   (setq org-roam-database-connector 'sqlite-builtin) ;; fix sqlite3 library was not found
+   (setq org-roam-directory org-directory)
    (if (not (f-dir-p org-roam-directory))
        (f-mkdir org-roam-directory))
-   (org-roam-db-autosync-mode)
-
+   
    ;; 忽略目录, daily notes内容不删除，但不放到org-roam中
    (setq org-roam-file-exclude-regexp
          (concat "^" (expand-file-name org-roam-directory) "/journals/"))
@@ -52,7 +53,7 @@
    ;; 2.support select directory, see https://github.com/org-roam/org-roam/issues/888
    ;;   example, tip dir and input: books/, will be create note in sub dir.
    (setq org-roam-capture-templates '(("d" "default" plain "%?" :target
-                                      (file+head "${dir}%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n- tags :: \n")
+                                      (file+head "${dir}%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: \n- tags :: \n")
                                       :unnarrowed t)
                                       ))
 
@@ -66,56 +67,9 @@
      (insert-file-contents (concat (get-locale-book-dir) "/template/literature.tpl"))
      )
 
-   ;; 避免被隐藏
-   ;; for org-roam-buffer-toggle
-   ;; Use side-window like V1
-   ;; This can take advantage of slots available with it
-   (add-to-list 'display-buffer-alist
-                '("\\*org-roam\\*"
-                  (display-buffer-in-side-window)
-                  (side . right)
-                  (slot . 0)
-                  (window-width . 0.25)
-                  (preserve-size . (t . nil))
-                  (window-parameters . ((no-other-window . t)
-                                        (no-delete-other-windows . t)))))
 
-   (progn
-     ;; https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks#showing-the-number-of-backlinks-for-each-node-in-org-roam-node-find
-     (cl-defmethod org-roam-node-directories ((node org-roam-node))
-       (if-let ((dirs (file-name-directory (file-relative-name (org-roam-node-file node) org-roam-directory))))
-           (format "(%s)" (car (split-string dirs "/")))
-         ""))
-
-     (cl-defmethod org-roam-node-backlinkscount ((node org-roam-node))
-       (let* ((count (caar (org-roam-db-query
-                            [:select (funcall count source)
-                                     :from links
-                                     :where (= dest $s1)
-                                     :and (= type "id")]
-                            (org-roam-node-id node)))))
-         (format "[%d]" count)))
-
-     (setq org-roam-node-display-template "${directories:10} ${tags:10} ${title:100} ${backlinkscount:6}")
-
-
-     ;; Run org-roam-db-sync when Emacs is idle
-     (defvar my/auto-org-roam-db-sync--timer nil)
-     (defvar my/auto-org-roam-db-sync--timer-interval 5)
-
-     (define-minor-mode my/auto-org-roam-db-sync-mode
-       "Toggle automatic `org-roam-db-sync' when Emacs is idle.
-Referece: `auto-save-visited-mode'"
-       :group 'org-roam
-       :global t
-       (when my/auto-org-roam-db-sync--timer (cancel-timer my/auto-org-roam-db-sync--timer))
-       (setq my/auto-org-roam-db-sync--timer
-             (when my/auto-org-roam-db-sync-mode
-               (run-with-idle-timer
-                my/auto-org-roam-db-sync--timer-interval :repeat
-                #'org-roam-db-sync))))
-
-     )
+   (require 'custom-org-roam)
+   
 
    )
  )
@@ -127,7 +81,7 @@ Referece: `auto-save-visited-mode'"
  :ensure t
  :config
  (setq org-roam-ui-sync-theme t
-       org-roam-ui-follow t
+       org-roam-ui-follow nil
        org-roam-ui-update-on-save t
        org-roam-ui-open-on-start t)
  )
