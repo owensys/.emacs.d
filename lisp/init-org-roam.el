@@ -3,7 +3,7 @@
 (eye/use-package
  'vertico
  :ensure t
- :load-path "vertico"
+ :load-path '("compat" "vertico")
  :config
  (progn
    (vertico-mode)

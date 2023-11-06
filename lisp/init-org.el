@@ -58,7 +58,7 @@
 ;; 默认显示图片出来
 (setq org-startup-with-inline-images t)
 ;; 保留几行空白行
-(setq org-cycle-separator-lines 0)
+(setq org-cycle-separator-lines 1)
 ;; always require new line in header below
 (setq require-final-newline t)
 (setq org-tags-column 0)
@@ -126,16 +126,6 @@
 ;; quick navigation when cursor is on a headline (before any of the stars)
 ;; ?:for help, n/p/f/b...
 (setq org-use-speed-commands t)
-
-;;
-;;#+SEQ_TODO: REPEAT(r) NEXT(n) TODO(t) WAIT(w@/!) DELEGATED(g@/!) PROJ(p) SOMEDAY(s) | DONE(d!) CANCELLED(c@/!)
-;;#+SEQ_TODO: GOAL(G) | ACHIEVED(a@) MISSED(m@)
-
-;; (setq org-todo-keywords
-;;       '(
-;;         (sequence "REPEAT(r)" "TODO(t)" "NEXT(n)" "WAIT(w@/!)" "MAYBE(m)" "DELEGATED(g@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)" "STUCK(s)")
-;;         (sequence "GOAL(G) " "|" " ACHIEVED(a@)" "MISSED(m@)")
-;;         ))
 
 
 ;; logbook
@@ -205,8 +195,9 @@
 ;;;; calendar
 (setq-default
  calendar-date-style 'iso
- calendar-day-abbrev-array ["周日" "周一" "周二" "周三" "周四" "周五" "周六"]
+ ;; calendar-day-abbrev-array ["周日" "周一" "周二" "周三" "周四" "周五" "周六"]
  calendar-day-name-array ["周日" "周一" "周二" "周三" "周四" "周五" "周六"]
+ ;; calendar-day-name-array ["Sunday" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday"]
  ;;calendar-month-name-array ["一月" "二月" "三月" "四月" "五月" "六月" "七月" "八月" "九月" "十月" "十一月" "十二月"]
  calendar-month-name-array ["01" "02" "03" "04" "05" "06" "07" "08" "09" "10" "11" "12"]
  calendar-week-start-day 1 ;; 日历从周一开始显示
@@ -303,7 +294,8 @@
 (setq org-link-file-path-type  'relative) ;插入链接时使用相对路径
 (setq org-log-done 'time)		 ;完成时添加时间
 (setq org-extend-today-until 4) ;;以4点当作一天的开始，用于agenda
-(setq org-enforce-todo-dependencies t)
+(setq org-enforce-todo-dependencies t) ;; Not allow to set a headline to DONE if children aren’t DONE.
+(setq-default org-enforce-todo-dependencies t)
 
 ;;;; drop
 (setq dnd-protocol-alist
@@ -321,7 +313,7 @@
 	      "pptx\\|pdf\\)$"))
 
 (setq eye-match-image-file-exp
-      (concat "\\(jpg\\|jpeg\\|png\\|gif\\)$"))
+      (concat "\\(jpg\\|jpeg\\|png\\|gif\\|svg\\|bmp\\)$"))
 
 ;;(setq is-support-imagemagic (string-match-p "imagemagic" system-configuration-features))
 (setq is-support-imagemagic (image-type-available-p 'imagemagick))
@@ -331,6 +323,7 @@
 ;; 使用系统程序打开mindmap文件
 (add-to-list 'org-file-apps '("\\.mm\\'" . system))
 (add-to-list 'org-file-apps '("\\.drawio\\'" . system))
+(add-to-list 'org-file-apps '("\\.txt\\'" . system))
 
 
 ;;;; latex
@@ -338,53 +331,6 @@
 
 ;;;; utils
 (require 'init-org-utils)
-
-;;;; deft
-(eye/use-package
- 'deft
- :ensure t
- :load-path "deft"
- :command 'deft
- :init
- (progn
-   (add-hook 'notebook-after-open-hook (lambda (note-dir)
-                                         (setq deft-directory note-dir))))
- :config
- (progn
-   (setq deft-recursive t)
-   (setq deft-use-filename-as-title t) ;;是否把文件名作为标题
-   (setq deft-extensions '("org"))
-   (setq deft-file-limit 200) ;;最多显示多少文件，nil不限制
-   (setq deft-filter-only-filenames t) ;;只搜索文件名
-   ;;(setq deft-filter-only-filenames nil) ;;搜索标题
-   (setq deft-auto-save-interval 0) ;;是否自动保存从deft打开的文件
-   (setq deft-current-sort-method 'mtime) ;;排序方式
-   (setq deft-default-extension "org")
-   ;; (setq deft-strip-summary-regexp ".*")
-   ;; (setq deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n")
-   (setq deft-strip-title-regexp
-         (concat "\\(?:^%+"
-                 "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-                 "\\|^#\\+TITLE: *"
-                 "\\|^[#* ]+"
-                 "\\|-\\*-[[:alpha:]]+-\\*-"
-                 "\\|^Title:[	 ]*\\|#+$\\)"))
-   (setq deft-strip-summary-regexp
-	 (concat "\\("
-		 "[\n\t]" ;; blank
-		 "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
-		 "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-		 "\\)"))
-
-   (setq deft-time-format nil) ;; set nil to hide
-
-
-   (set-face-attribute 'deft-summary-face nil :font en-font-name)
-   (set-face-attribute 'deft-title-face nil :font en-font-name)
-   (set-face-attribute 'deft-time-face nil :font en-font-name)
-
-
-   ))
 
 
 ;;;; capture
@@ -412,6 +358,8 @@
   (setq org-directory note-dir)
   (setq org-default-notes-file (concat note-dir "/inbox.org"))
   (setq diary-file (concat note-dir "/diary"))
+
+  (setq org-agenda-files (directory-files (concat note-dir "/todolist") t "org$"))
   
   ;; (setq eye-org-file-attach-base-dir "~/attach")
   (setq eye-org-file-attach-base-dir (s-trim (get-string-from-file (concat note-dir "/attach_dir"))))
@@ -473,6 +421,86 @@
    (setq org-bullets-bullet-list '("✿" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" "◉" ))
    
    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+   ))
+
+
+
+;;;; todo keywords
+;;#+SEQ_TODO: REPEAT(r) NEXT(n) TODO(t) WAIT(w@/!) DELEGATED(g@/!) PROJ(p) SOMEDAY(s) | DONE(d!) CANCELLED(c@/!)
+;;#+SEQ_TODO: GOAL(G) | ACHIEVED(a@) MISSED(m@)
+(setq org-todo-keywords
+      '(
+        (sequence "REPEAT(r)" "TODO(t)" "NEXT(n)" "SOMEDAY(m)" "WAIT(w@/!)" "DELEGATED(g@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)" "STUCK(s)")
+        (sequence "GOAL(G) " "|" " ACHIEVED(a@)" "MISSED(m@)")
+        ))
+;; maybe add org-superstar package
+;;
+
+;; https://hugocisneros.com/org-config
+(defun my/buffer-face-mode-variable ()
+  "Set font to a variable width (proportional) fonts in current buffer"
+  (interactive)
+  (setq buffer-face-mode-face '(:family "Roboto Slab"
+                                :height 150
+                                :width normal))
+  (buffer-face-mode))
+(defun my/style-org-agenda()
+  (my/buffer-face-mode-variable)
+  (set-face-attribute 'org-agenda-date nil :height 1.1)
+  (set-face-attribute 'org-agenda-date-today nil :height 1.1 :slant 'italic)
+  (set-face-attribute 'org-agenda-date-weekend nil :height 1.1))
+
+;; (add-hook 'org-agenda-mode-hook 'my/style-org-agenda)
+
+(setq org-agenda-breadcrumbs-separator " ❱ "
+      org-agenda-current-time-string "⏰ ┈┈┈┈┈┈┈┈┈┈┈ now"
+      org-agenda-time-grid '((weekly today require-timed)
+                             (800 1000 1200 1400 1600 1800 2000)
+                             "---" "┈┈┈┈┈┈┈┈┈┈┈┈┈")
+      org-agenda-prefix-format '((agenda . "%i %-12:c%?-12t%b% s")
+                                 (todo . " %i %-12:c")
+                                 (tags . " %i %-12:c")
+                                 (search . " %i %-12:c"))
+      )
+
+;; C-c C-w: org-refile 从inbox移到其它文件，不需要再移回inbox文件
+(setq org-refile-targets
+      '((org-agenda-files :maxlevel . 2)))
+
+
+;;;; org-super-agenda
+(eye/use-package
+ 'org-super-agenda
+ :load-path '("ts" "ht" "org-super-agenda")
+ :ensure t
+ :config
+ (progn
+   ;; 必须启用，否则group
+   (org-super-agenda-mode t)
+   
+   (setq org-agenda-custom-commands
+	     '(("v" "Super view"
+	        ((agenda "" ((org-agenda-span 'day)
+			             (org-super-agenda-groups
+			              '((:name "Today"
+				                   :time-grid t
+				                   :date today
+				                   :todo "TODAY"
+				                   :scheduled today
+				                   :order 1)))))
+             
+	         (alltodo "" ((org-agenda-overriding-header "")
+			              (org-super-agenda-groups
+			               '(
+			                 (:name "All Next to do" :todo "NEXT")
+			                 (:name "All Due Soon"   :deadline future)
+			                 (:name "All Delegated"  :todo "DELEGATED")
+                             (:name "All Wait"       :todo "WAIT"
+                                    :face (:foreground "gray60"))
+			                 (:name "All Someday"    :todo "SOMEDAY"
+                                    :face (:foreground "gray60"))
+			                 ))))))))
+   
    ))
 
 

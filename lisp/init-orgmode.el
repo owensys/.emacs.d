@@ -287,9 +287,6 @@
 (add-to-list 'org-agenda-files (concat locale-notebook-dir "/org/gtd/tickler.org"))
 
 
-;; C-c C-w: org-refile 从inbox移到其它文件，不需要再移回inbox文件
-(setq org-refile-targets
-      '((org-agenda-files :maxlevel . 2)))
 
 
 ;;(add-to-list 'org-agenda-files (concat locale-notebook-dir "/journal/"))
