@@ -61,7 +61,7 @@
 ;;;; swiper counsel ivy
 (eye/use-package
  'swiper
- :load-path "swiper"
+ :load-path "swiper-self"
  :command '((ivy-read . "ivy")
             (counsel-org-goto . "counsel")
             (counsel-M-x . "counsel")
@@ -92,17 +92,7 @@
    (define-key global-map (kbd "M-x") #'counsel-M-x)
 
    ;; 使counsel-rg只需要2个字符就可以开始实时搜索
-   (add-to-list 'ivy-more-chars-alist '(counsel-rg . 2))
-
-   (when is-windows
-   ;;; redefine function, fix windows encoding
-     (defun counsel-git-cands (dir)
-       (let ((default-directory dir))
-         (split-string
-          (decode-coding-string (shell-command-to-string counsel-git-cmd) 'utf-8)
-          "\0"
-          t)))
-     )
+   (add-to-list 'ivy-more-chars-alist '(counsel-rg . 1))
 
    (when use-fixed-minibuffer-height
      ;; 固定minibuffer 高度
@@ -404,14 +394,14 @@
                  :ensure t)
 
 ;;;; sort-tab
-;; (eye/use-package
-;;  'sort-tab
-;;  :ensure t
-;;  :load-path "sort-tab"
-;;  :config
-;;  (progn
-;;    (sort-tab-mode 1)
-;;    ))
+(eye/use-package
+ 'sort-tab
+ :ensure t
+ :load-path "sort-tab"
+ :config
+ (progn
+   (sort-tab-mode 1)
+   ))
 
 
 ;; 使用 emacsclient 需要先启动服务
