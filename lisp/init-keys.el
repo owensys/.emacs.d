@@ -73,7 +73,7 @@
   (bind-key modemap "<f6>" 'eye/org-add-sibling-headline)
   (bind-key modemap "<f7>" 'eye/org-add-child-headline)
   (bind-key modemap "<f9>" #'org-agenda)
-  (bind-key modemap "<f10>" #'eye/agenda-show-projects)
+  ;; (bind-key modemap "<f10>" #'eye/agenda-show-projects)
   (bind-key prog-mode-map "<backspace>" #'intellij-backspace)
 
   (bind-key modemap "M-o" #'other-window)
@@ -306,6 +306,7 @@
   (eye-bind-ctrl-key modemap "oiu" #'org-roam-ui-mode)
   (eye-bind-ctrl-key modemap "oit" #'org-roam-ui-follow-mode)
   (eye-bind-ctrl-key modemap "oid" #'org-id-get-create)
+  (eye-bind-ctrl-key modemap "oik" #'eye/org-roam-insert-tag)
 
   (unset-mode-key modemap (kbd "C-7"))
   (eye-bind-ctrl-key modemap "77" 'xah-extend-selection)
@@ -370,10 +371,10 @@
 ;; (global-set-key (kbd "<C-next>") 'centaur-tabs-forward) ;; C- page down
 ;; (global-set-key (kbd "<C-S-next>") 'centaur-tabs-counsel-switch-group) ;; C- page down
 
-(global-set-key (kbd "<C-prior>") 'sort-tab-select-prev-tab) ;; C- page up
-(global-set-key (kbd "<C-next>") 'sort-tab-select-next-tab) ;; C- page down
-;; (global-set-key (kbd "<C-S-prior>") 'tab-bar-new-tab)
-;; (global-set-key (kbd "<C-S-next>") 'tab-bar-select-tab-by-name) ;; C- page down
+(global-set-key (kbd "<C-prior>") 'tab-bar-switch-to-prev-tab) ;; C- page up
+(global-set-key (kbd "<C-next>") 'tab-bar-switch-to-next-tab) ;; C- page down
+(global-set-key (kbd "<C-S-prior>") 'tab-bar-new-tab)
+(global-set-key (kbd "<C-S-next>") 'tab-bar-select-tab-by-name) ;; C- page down
 
 ;; (global-set-key (kbd "<C-insert>") 'emms-stop) ;; C- insert
 
