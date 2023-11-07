@@ -446,18 +446,46 @@
   (buffer-face-mode))
 (defun my/style-org-agenda()
   (my/buffer-face-mode-variable)
-  (set-face-attribute 'org-agenda-date nil :height 1.1)
+  (set-face-attribute 'org-agenda-date nil :height 1.5)
   (set-face-attribute 'org-agenda-date-today nil :height 1.1 :slant 'italic)
   (set-face-attribute 'org-agenda-date-weekend nil :height 1.1))
 
 ;; (add-hook 'org-agenda-mode-hook 'my/style-org-agenda)
+
+
+;; 自定义在agenda view 顶部显示的日期格式
+(setq-default org-agenda-format-date (quote my-org-agenda-format-date-aligned))
+(defun my-org-agenda-format-date-aligned (date)
+  "Format a DATE string for display in the daily/weekly agenda.
+This function makes sure that dates are aligned for easy reading."
+  (require 'cal-iso)
+  (let* ((dayname (calendar-day-name date))
+	 (day (cadr date))
+	 (day-of-week (calendar-day-of-week date))
+	 (month (car date))
+	 (monthname (calendar-month-name month))
+	 (year (nth 2 date))
+	 (iso-week (org-days-to-iso-week
+		    (calendar-absolute-from-gregorian date)))
+	 (weekyear (cond ((and (= month 1) (>= iso-week 52))
+			  (1- year))
+			 ((and (= month 12) (<= iso-week 1))
+			  (1+ year))
+			 (t year)))
+	 (weekstring (if (= day-of-week 1)
+			 (format " 第%02d周" iso-week)
+		       "")))
+    ;; 修改点：在agenda中显示的日期格式
+    (format "%s-%02d %-4s"
+	    monthname day dayname)))
+
 
 (setq org-agenda-breadcrumbs-separator " ❱ "
       org-agenda-current-time-string "⏰ ┈┈┈┈┈┈┈┈┈┈┈ now"
       org-agenda-time-grid '((weekly today require-timed)
                              (800 1000 1200 1400 1600 1800 2000)
                              "---" "┈┈┈┈┈┈┈┈┈┈┈┈┈")
-      org-agenda-prefix-format '((agenda . "%i %-12:c%?-12t%b% s")
+      org-agenda-prefix-format '((agenda . "%i %-12:c%?-12t%b% s")  ;; 显示breadcrumbs
                                  (todo . " %i %-12:c")
                                  (tags . " %i %-12:c")
                                  (search . " %i %-12:c"))
@@ -465,8 +493,12 @@
 
 ;; C-c C-w: org-refile 从inbox移到其它文件，不需要再移回inbox文件
 (setq org-refile-targets
-      '((org-agenda-files :maxlevel . 2)))
+      '((org-agenda-files :maxlevel . 1)))
 
+;; habit: https://orgmode.org/manual/Tracking-your-habits.html
+(require 'org-habit)
+(setq org-habit-show-habits-only-for-today t)
+(setq org-habit-graph-column 80) ;; 红色块开始列，避免遮挡文本内容
 
 ;;;; org-super-agenda
 (eye/use-package
@@ -479,27 +511,40 @@
    (org-super-agenda-mode t)
    
    (setq org-agenda-custom-commands
-	     '(("v" "Super view"
-	        ((agenda "" ((org-agenda-span 'day)
-			             (org-super-agenda-groups
-			              '((:name "Today"
-				                   :time-grid t
-				                   :date today
-				                   :todo "TODAY"
-				                   :scheduled today
-				                   :order 1)))))
+	 '(("v" "Super view"
+	    ((agenda ""
+                     ((org-agenda-span 'day)
+		      (org-super-agenda-groups
+		       '((:name "Today"
+				:time-grid t
+				:date today
+				:todo "TODAY"
+				:scheduled today
+				:order 1)))))
              
-	         (alltodo "" ((org-agenda-overriding-header "")
-			              (org-super-agenda-groups
-			               '(
-			                 (:name "All Next to do" :todo "NEXT")
-			                 (:name "All Due Soon"   :deadline future)
-			                 (:name "All Delegated"  :todo "DELEGATED")
-                             (:name "All Wait"       :todo "WAIT"
-                                    :face (:foreground "gray60"))
-			                 (:name "All Someday"    :todo "SOMEDAY"
-                                    :face (:foreground "gray60"))
-			                 ))))))))
+	     (alltodo ""
+                      ((org-agenda-overriding-header "Category View")
+		       (org-super-agenda-groups
+			'(
+                          (:name "Key results" :category "kr")
+			  (:name "All Next to do" :todo "NEXT")
+                          (:name "Habit" :habit t)
+			  (:name "All Due Soon"   :deadline future)
+			  (:name "All Delegated"  :todo "DELEGATED")
+                          (:name "All Wait"       :todo "WAIT"
+                                 :face (:foreground "gray60"))
+			  (:name "All Someday"    :todo "SOMEDAY"
+                                 :face (:foreground "gray60"))
+                          (:auto-category)
+			  ))))
+             (alltodo ""
+                      ((org-agenda-overriding-header "OKR View")
+                       (org-super-agenda-groups
+                        '(
+                          (:auto-property "AREA")
+                          (:auto-category)
+                          ))))
+             ))))
    
    ))
 
