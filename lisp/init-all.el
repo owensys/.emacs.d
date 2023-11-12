@@ -61,7 +61,7 @@
 ;;;; swiper counsel ivy
 (eye/use-package
  'swiper
- :load-path "swiper-self"
+ :load-path "swiper"
  :command '((ivy-read . "ivy")
             (counsel-org-goto . "counsel")
             (counsel-M-x . "counsel")
@@ -394,14 +394,14 @@
                  :ensure t)
 
 ;;;; sort-tab
-(eye/use-package
- 'sort-tab
- :ensure t
- :load-path "sort-tab"
- :config
- (progn
-   (sort-tab-mode 1)
-   ))
+;; (eye/use-package
+;;  'sort-tab
+;;  :ensure nil
+;;  :load-path "sort-tab"
+;;  :config
+;;  (progn
+;;    (sort-tab-mode 1)
+;;    ))
 
 
 ;; 使用 emacsclient 需要先启动服务
@@ -437,6 +437,19 @@
 (require 'init-holo-layer)
 (require 'init-org)
 (require 'init-denote)
+
+
+(eye/use-package
+ 'treemacs
+ :load-path '("s" "f" "ht" "ace-window" "pfuture" "treemacs/src/elisp")
+ :command 'treemacs
+ :config
+ (progn
+   (setq treemacs-expand-after-init nil ;; 默认不展开第一个项目
+         treemacs-width 50 ;; 宽度
+         treemacs-missing-project-action 'keep ;; 不移除未找到的项目
+         )
+   ))
 
 ;; (require 'init-tiddly)
 ;; (require 'init-local-html)
