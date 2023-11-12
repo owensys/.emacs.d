@@ -415,7 +415,8 @@ title 链接库关系图
       (progn
         (if (string-equal today-date goto-date)
             (progn ;; insert today note
-              (org-end-of-subtree)
+              ;;(org-end-of-subtree)
+              (end-of-buffer)
               (newline)
               (insert (format "* %s" goto-date))
               (newline)
