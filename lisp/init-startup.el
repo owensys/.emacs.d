@@ -40,6 +40,17 @@
 (setq is-work (if (getenv "IS_WORK") t nil))
 (setq is-org (if (getenv "IS_ORG") t nil))
 
+;;; disable warnings
+(setq byte-compile-warnings '(not nresolved
+                                  free-vars
+                                  callargs
+                                  redefine
+                                  obsolete
+                                  noruntime
+                                  cl-functions
+                                  interactive-only
+                                  ))
+
 ;;; 跨平台配置
 ;; https://emacs-china.org/t/emacs/18687
 ; 值 1 对 1
