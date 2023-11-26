@@ -150,7 +150,8 @@ inst "shrink-path" "https://gitlab.com/bennya/shrink-path.el.git" "c14882c"
 inst "shut-up" "https://github.com/cask/shut-up.git" "ff6f06f"
 inst "smex" "https://github.com/nonsequitur/smex.git" "55aaebe"
 inst "super-save" "https://github.com/bbatsov/super-save.git" "6f6512b"
-inst "swiper" "https://github.com/abo-abo/swiper.git" "d28225e"
+#inst "swiper" "https://github.com/abo-abo/swiper.git" "d28225e"
+git clone -b owen https://github.com/owensys/swiper swiper-self
 inst "symbol-overlay" "https://github.com/wolray/symbol-overlay.git" "72ff963"
 # Emacs-Lisp Library for converting S-expressions to TOML
 inst "tomelr" "https://github.com/kaushalmodi/tomelr.git" "670e0a0" #Needed by ox-hugo
@@ -162,7 +163,8 @@ inst "vertico" "https://github.com/minad/vertico.git" "926234a"
 inst "vertico-posframe" "https://github.com/tumashu/vertico-posframe.git" "7da6d64"
 inst "visual-fill-column" "https://github.com/joostkremers/visual-fill-column.git" "577fd2d"
 inst "w32-browser" "https://github.com/emacsorphanage/w32-browser" "e5c60ea"
-inst "web-mode" "https://github.com/fxbois/web-mode.git" "57856ba"
+inst "web-mode" "https://github.com/fxbois/web-mode.git" "44c6bf"
+inst "js2-mode" "https://github.com/mooz/js2-mode" "79bc78"
 inst "wgrep" "https://github.com/mhayashi1120/Emacs-wgrep.git" "3132abd"
 inst "with-editor" "https://github.com/magit/with-editor.git" "bce8d1b"
 inst "writeroom-mode" "https://github.com/joostkremers/writeroom-mode.git" "1fd5284"
@@ -180,5 +182,7 @@ inst "ctrlf" "https://github.com/raxod502/ctrlf.git" "9b4cf"
 inst "popper" "https://github.com/karthink/popper.git" "a93ff3"
 inst "holo-layer" "https://github.com/manateelazycat/holo-layer" "94ba9"
 inst "blink-search" "https://github.com/manateelazycat/blink-search.git" "4ce65"
+inst "treesit-auto" "https://github.com/renzmann/treesit-auto.git" "bac3b9"
+
 
 echo "All package install finished."
