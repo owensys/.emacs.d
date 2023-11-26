@@ -130,6 +130,7 @@ locale-notebook-dir use absolute path for advise.
 
 (defun eye/open-explorer ()
   "Open explorer of current buffer directory."
+  (interactive)
   (when (and default-directory (file-directory-p default-directory)
 	     (eq system-type 'windows-nt))
     (let ((dir default-directory)
@@ -1622,6 +1623,12 @@ the `format' call in a list."
 
 (defun to-windows-path(path)
   (subst-char-in-string ?/ ?\\ path))
+
+
+(defun eye/switch-to-scratch()
+  (interactive)
+  (switch-to-buffer "*scratch*"))
+
 
 
 (provide 'init-utils)
