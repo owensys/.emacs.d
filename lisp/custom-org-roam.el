@@ -39,7 +39,7 @@
   (let ((buffer (get-file-buffer (org-roam-node-file node))))
     buffer))
 
-(setq org-roam-node-display-template "${title:115} ${backlinkscount:6} ${todostate:20} ${directories:10} ${tags:15}")
+(setq org-roam-node-display-template "${title:80} ${backlinkscount:6} ${todostate:20} ${directories:10} ${tags:15}")
 
 ;; (add-to-list 'display-buffer-alist
 ;; 	     '("\\*org-roam\\*"
