@@ -24,15 +24,17 @@
 (defun eye-after-load-theme-setup (theme)
   (message "setup after load theme")
   ;; (set-face-attribute 'mode-line nil :background (face-attribute 'default :background))
-  (set-face-attribute 'tab-bar-tab nil :foreground "gray80" :background  "SkyBlue4")
-  (set-face-attribute 'tab-bar-tab-inactive nil)
+  ;; (set-face-attribute 'tab-bar-tab nil :foreground "gray80" :background  "SkyBlue4")
+  ;; (set-face-attribute 'tab-bar-tab-inactive nil)
   (if (eye-current-theme-is-dark)
       (progn
         (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
-        (set-face-attribute 'header-line nil :height 160 :background "#051e59" :foreground "gray60")) ;; dark #003045
+        ;; (set-face-attribute 'header-line nil :height 160 :background "#051e59" :foreground "gray60") ;; dark #003045
+        )
     (progn
       (set-face-attribute 'font-lock-comment-face nil :foreground "dark red")
-      (set-face-attribute 'header-line nil :height 160 :background "#f3e0d5" :foreground "gray36"))
+      ;; (set-face-attribute 'header-line nil :height 160 :background "#f3e0d5" :foreground "gray36")
+      )
     ))
 (add-hook 'load-theme-after-hook #'eye-after-load-theme-setup)
 
@@ -49,8 +51,8 @@
      (if is-gui
          (let* ((hh (string-to-int (format-time-string "%H" (current-time)))))
            (if (or (>= hh 17) (<= hh 6))
-               (load-theme 'ef-winter t)
-             (load-theme 'ef-spring t)
+               (load-theme 'ef-elea-dark t)
+             (load-theme 'ef-elea-light t)
              ))
        (load-theme 'wombat t))
      )
