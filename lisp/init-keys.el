@@ -63,6 +63,7 @@
 ;; unset some keys
 (bind-key global-map "C-x C-c" 'ignore) ;; 不使用这个快捷键退出
 
+
 ;;;; setup keys
 (defun eye-set-keys (modemap)
   ;; quick key setup
@@ -72,10 +73,7 @@
   (bind-key modemap "<f5>" #'revert-buffer)
   (bind-key modemap "<f6>" 'eye/org-add-sibling-headline)
   (bind-key modemap "<f7>" 'eye/org-add-child-headline)
-  (bind-key modemap "<f9>" #'(lambda ()
-                               (interactive)
-                               (delete-other-windows)
-                               (org-agenda nil "v")))
+  (bind-key modemap "<f9>" #'eye/open-agenda)
   (bind-key modemap "<f10>" #'eye/agenda-show-projects)
   (bind-key prog-mode-map "<backspace>" #'intellij-backspace)
 

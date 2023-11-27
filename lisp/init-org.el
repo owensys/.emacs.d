@@ -12,7 +12,10 @@
   (interactive)
   (require 's)
   (require 'f)
-  (let* ((note-dir (counsel-read-directory-name "Select note directory: ")))
+  (let* ((dir-list (s-split "\n" (get-string-from-file "~/.notedir")))
+         ;; (note-dir (counsel-read-directory-name "Select note directory: "))
+         (note-dir (ivy-read "Select note directory: " dir-list))
+         )
     (run-hook-with-args 'notebook-before-open-hook note-dir)
     (find-file (expand-file-name "index.org" note-dir))
     (run-hook-with-args 'notebook-after-open-hook note-dir)
@@ -320,7 +323,7 @@
 
 
 ;;;; org-file-apps
-;; 使用系统程序打开mindmap文件
+;; 使用系统程序打开文件
 (add-to-list 'org-file-apps '("\\.mm\\'" . system))
 (add-to-list 'org-file-apps '("\\.drawio\\'" . system))
 (add-to-list 'org-file-apps '("\\.txt\\'" . system))
@@ -334,22 +337,65 @@
 
 
 ;;;; capture
+(defun eye-find-journal-path()
+  "find location to insert journals item,
+can not use save-excursion"
+  (find-file (concat org-directory "/journals/" (format-time-string "%Y-%m.org")))
+  (beginning-of-buffer)
+  (if (search-forward (format "* %s" (format-time-string "%Y-%m-%d" (current-time))) nil t)
+      (progn
+        (org-end-of-subtree)
+        (newline)
+        )
+    (progn ;; insert today note
+      (end-of-buffer)
+      (newline)
+      (insert (format "* %s" (format-time-string "%Y-%m-%d" (current-time))))
+      (newline)
+      )
+    )
+  )
+
+(defun eye-find-project-path()
+  "find location to insert task item,
+can not use save-excursion"
+  (let* ((proj-files (directory-files (concat org-directory "/projs") t "proj-.*.org$"))
+         (select-file (ivy-read "Select project file:" proj-files))
+         )
+    (find-file select-file)
+    (beginning-of-buffer)
+    (if (search-forward "* todolist" nil t)
+        (progn
+          (org-end-of-subtree)
+          (newline))
+      (progn
+        (end-of-buffer)
+        (newline)
+        (insert "* todolist")
+        (newline)
+        ))
+    ))
+
 (defun eye-setup-capture-template (note-dir)
   (require 'org-capture)
   ;; capture 的目标路径不能直接使用 concat
-  (setq eye-org-inbox-path (concat note-dir "/bookmarks.org"))
+  (setq eye-org-inbox-path (concat note-dir "/projs/inbox.org"))
   (setq eye-org-bookmarks-path (concat note-dir "/bookmarks.org"))
   (setq eye-org-contacts-path (concat note-dir "/contacts.org"))
   (setq eye-org-books-path (concat note-dir "/books.org"))
   (setq org-capture-templates
-        '(("i" "Inbox" entry (file+headline eye-org-inbox-path "Inbox")
-	   "* TODO %i%?")
+        '(;; ("i" "Inbox" entry (file+headline eye-org-inbox-path)
+	      ;;  "** %i%?")
+          ("j" "Journal" plain (function eye-find-journal-path) ;; 用plain才能添加sub heading
+	       "** %i%?")
+          ("p" "Project" plain (function eye-find-project-path)
+	       "** TODO %i%?")
           ("b" "Bookmark" entry (file+headline eye-org-bookmarks-path "Bookmarks")
            "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n" :empty-lines 1)
           ("c" "Contacts" entry (file eye-org-contacts-path)
-               "* %^{姓名} %^{手机号}p %^{邮箱}p %^{住址}p\n\n  %?" :empty-lines 1 :kill-buffer 1)
+               "* %^{name} %^{phone}p %^{email}p %^{address}p\n\n  %?" :empty-lines 1 :kill-buffer 1)
           ("o" "Books" entry (file eye-org-books-path)
-           "* %^{书名} %^{作者}p \n  %?" :empty-lines 1)
+           "* %^{book-name} %^{book-author}p \n  %?" :empty-lines 1)
           ))
   )
 
@@ -359,7 +405,7 @@
   (setq org-default-notes-file (concat note-dir "/inbox.org"))
   (setq diary-file (concat note-dir "/diary"))
 
-  (setq org-agenda-files (directory-files (concat note-dir "/todolist") t "org$"))
+  (setq org-agenda-files (directory-files (concat note-dir "/projs") t "org$"))
   
   ;; (setq eye-org-file-attach-base-dir "~/attach")
   (setq eye-org-file-attach-base-dir (s-trim (get-string-from-file (concat note-dir "/attach_dir"))))
@@ -560,6 +606,25 @@ This function makes sure that dates are aligned for easy reading."
    
    ))
 
+
+
+(defun eye/open-agenda ()
+  "open agenda with new tab"
+  (interactive)
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab "MyAgenda")
+  (org-agenda nil "v")
+  (delete-other-windows))
+
+(defun eye/close-agenda ()
+  "close agenda tab"
+  (interactive)
+  (org-agenda-quit)
+  (if (fboundp 'tab-bar-close-tab-by-name)
+      (tab-bar-close-tab-by-name "MyAgenda"))
+  )
+
+(define-key org-agenda-mode-map (kbd "q") #'eye/close-agenda)
 
 
 ;;;; plantuml
