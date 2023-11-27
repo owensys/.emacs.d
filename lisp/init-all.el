@@ -61,7 +61,7 @@
 ;;;; swiper counsel ivy
 (eye/use-package
  'swiper
- :load-path "swiper"
+ :load-path "swiper-self"
  :command '((ivy-read . "ivy")
             (counsel-org-goto . "counsel")
             (counsel-M-x . "counsel")
@@ -372,6 +372,7 @@
    (define-key symbol-overlay-map (kbd "s") nil)
    (define-key symbol-overlay-map (kbd "q") nil)
    (define-key symbol-overlay-map (kbd "r") nil)
+   (setq symbol-overlay-faces '(symbol-overlay-face-7 symbol-overlay-face-2 symbol-overlay-face-3 symbol-overlay-face-4 symbol-overlay-face-5 symbol-overlay-face-6 symbol-overlay-face-8))
    )
  )
 
