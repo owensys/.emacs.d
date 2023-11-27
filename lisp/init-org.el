@@ -239,8 +239,8 @@
 
                         ("#+BEGIN_SRC" . ?✎)
                         ("#+END_SRC" . ?□)
-                        ("#+BEGIN_QUOTE" . ?»)
-                        ("#+END_QUOTE" . ?«)
+                        ("#+BEGIN_QUOTE" . ?❝)
+                        ("#+END_QUOTE" . ?❞)
                         ("#+HEADERS" . ?☰)
                         ("#+RESULTS:" . ?💻)
                         ("#+FILETAGS:" . ?⌦)
@@ -249,8 +249,8 @@
 
                         ("#+begin_src" . ?✎)
                         ("#+end_src" . ?□)
-                        ("#+begin_quote" . ?»)
-                        ("#+end_quote" . ?«)
+                        ("#+begin_quote" . ?❝) ;; ❝ »
+                        ("#+end_quote" . ?❞) ;; ❞ «
                         ("#+headers" . ?☰)
                         ("#+results:" . ?💻)
                         ("#+filetags:" . ?⌦)
@@ -430,8 +430,10 @@
 ;;#+SEQ_TODO: GOAL(G) | ACHIEVED(a@) MISSED(m@)
 (setq org-todo-keywords
       '(
-        (sequence "REPEAT(r)" "TODO(t)" "NEXT(n)" "SOMEDAY(m)" "WAIT(w@/!)" "DELEGATED(g@/!)" "|" "DONE(d!)" "CANCELLED(c@/!)" "STUCK(s)")
-        (sequence "GOAL(G) " "|" " ACHIEVED(a@)" "MISSED(m@)")
+        (sequence "REPEAT(r)" "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "WAIT(w@/!)" "DELEGATED(e@/!)" "GOAL(o)"
+                  "|"
+                  "DONE(d!)" "CANCELLED(c@/!)" "STUCK(k)"
+                  "ACHIEVED(a@)" "MISSED(m@)")
         ))
 ;; maybe add org-superstar package
 ;;
@@ -440,17 +442,24 @@
 (defun my/buffer-face-mode-variable ()
   "Set font to a variable width (proportional) fonts in current buffer"
   (interactive)
-  (setq buffer-face-mode-face '(:family "Roboto Slab"
+  (setq buffer-face-mode-face '(:family "更纱黑体 Mono SC Nerd"
                                 :height 150
                                 :width normal))
   (buffer-face-mode))
 (defun my/style-org-agenda()
-  (my/buffer-face-mode-variable)
-  (set-face-attribute 'org-agenda-date nil :height 1.5)
+  ;; (my/buffer-face-mode-variable)
+  (set-face-attribute 'org-agenda-date nil :height 1.1)
   (set-face-attribute 'org-agenda-date-today nil :height 1.1 :slant 'italic)
-  (set-face-attribute 'org-agenda-date-weekend nil :height 1.1))
+  (set-face-attribute 'org-agenda-date-weekend nil :height 1.1)
+  (if (fboundp 'org-super-agenda-mode)
+      (progn
+        ;; (set-face-attribute 'org-super-agenda-header nil
+        ;;                     :background "#00474f" :foreground "gray80" :slant 'italic :box "dark red")
+        (set-face-attribute 'org-agenda-structure nil :height 1.1 :slant 'italic)
+        ))
+  )
 
-;; (add-hook 'org-agenda-mode-hook 'my/style-org-agenda)
+(add-hook 'org-agenda-mode-hook 'my/style-org-agenda)
 
 
 ;; 自定义在agenda view 顶部显示的日期格式
@@ -509,13 +518,16 @@ This function makes sure that dates are aligned for easy reading."
  (progn
    ;; 必须启用，否则group
    (org-super-agenda-mode t)
-   
+   ;; 后面加一个空格，使背景比文本边界多一点空间
+   (setq org-super-agenda-unmatched-name "Other items ")
+   ;; (setq org-super-agenda-header-prefix "☯ ") ;; https://symbl.cc/en/262F/
+   (setq org-super-agenda-header-prefix "⚛ ") ;; https://symbl.cc/en/269B/
    (setq org-agenda-custom-commands
 	 '(("v" "Super view"
 	    ((agenda ""
                      ((org-agenda-span 'day)
 		      (org-super-agenda-groups
-		       '((:name "Today"
+		       '((:name "Today "
 				:time-grid t
 				:date today
 				:todo "TODAY"
@@ -526,14 +538,14 @@ This function makes sure that dates are aligned for easy reading."
                       ((org-agenda-overriding-header "Category View")
 		       (org-super-agenda-groups
 			'(
-                          (:name "Key results" :category "kr")
-			  (:name "All Next to do" :todo "NEXT")
-                          (:name "Habit" :habit t)
-			  (:name "All Due Soon"   :deadline future)
-			  (:name "All Delegated"  :todo "DELEGATED")
-                          (:name "All Wait"       :todo "WAIT"
+                          (:name "Key results " :category "kr")
+			  (:name "Next to do " :todo "NEXT")
+                          (:name "Habit " :habit t)
+			  (:name "Due Soon "   :deadline future)
+			  (:name "Delegated "  :todo "DELEGATED")
+                          (:name "Wait "       :todo "WAIT"
                                  :face (:foreground "gray60"))
-			  (:name "All Someday"    :todo "SOMEDAY"
+			  (:name "Someday "    :todo "SOMEDAY"
                                  :face (:foreground "gray60"))
                           (:auto-category)
 			  ))))

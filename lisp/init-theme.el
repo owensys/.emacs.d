@@ -29,7 +29,7 @@
   (if (eye-current-theme-is-dark)
       (progn
         (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
-        (set-face-attribute 'header-line nil :height 160 :background "#051e59" :foreground "gray60") ;; dark #003045
+        ;; (set-face-attribute 'header-line nil :height 160 :background "#051e59" :foreground "gray60") ;; dark #003045
         )
     (progn
       (set-face-attribute 'font-lock-comment-face nil :foreground "dark red")
@@ -52,8 +52,8 @@
          ;; (load-theme 'ef-melissa-dark t)
          (let* ((hh (string-to-int (format-time-string "%H" (current-time)))))
            (if (or (>= hh 17) (<= hh 6))
-               (load-theme 'ef-melissa-dark t)
-             (load-theme 'ef-melissa-light t)
+               (load-theme 'ef-elea-dark t)
+             (load-theme 'ef-elea-light t)
              ))
        (load-theme 'wombat t))
      )
