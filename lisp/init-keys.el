@@ -2,12 +2,14 @@
 (eye/use-package
  'which-key
  :load-path '("dash" "s" "f" "emacs-which-key")
+ :ensure t
  :command '((which-key-mode . "which-key"))
  :config
  (progn
    (setq which-key-popup-type 'frame)
    (which-key-setup-side-window-bottom)
    (defalias 'wkey 'which-key-add-key-based-replacements)
+   (which-key-mode t)
    ))
 
 ;; hydra
@@ -73,6 +75,7 @@
   (bind-key modemap "<f5>" #'revert-buffer)
   (bind-key modemap "<f6>" 'eye/org-add-sibling-headline)
   (bind-key modemap "<f7>" 'eye/org-add-child-headline)
+  (bind-key modemap "<f8>" #'org-capture)
   (bind-key modemap "<f9>" #'eye/open-agenda)
   (bind-key modemap "<f10>" #'eye/agenda-show-projects)
   (bind-key prog-mode-map "<backspace>" #'intellij-backspace)
