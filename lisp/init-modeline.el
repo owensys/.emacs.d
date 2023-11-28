@@ -37,6 +37,7 @@
 (defun eye-mode-line-setup (&optional theme)
   ;; (setq-default mode-line-format nil)
   ;; (setq-default header-line-format nil)
+  (setq-default mode-line-format "") ;; 清除空白，如果使用nil，则完全隐藏modeline
   (set-face-attribute 'mode-line nil :height 0.1 :background "#7f5ab6")
   (set-face-attribute 'mode-line-inactive nil :height 0.1)
   )
