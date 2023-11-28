@@ -46,8 +46,9 @@
        (f-mkdir org-roam-directory))
    
    ;; 忽略目录, daily notes内容不删除，但不放到org-roam中
-   (setq org-roam-file-exclude-regexp
-         (concat "^" (expand-file-name org-roam-directory) "/journals/"))
+   ;; (setq org-roam-file-exclude-regexp
+   ;; (concat "^" (expand-file-name org-roam-directory) "/journals/"))
+   (setq org-roam-file-exclude-regexp nil)
 
    ;; 1.add date
    ;; 2.support select directory, see https://github.com/org-roam/org-roam/issues/888

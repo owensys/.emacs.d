@@ -476,7 +476,7 @@ can not use save-excursion"
 ;;#+SEQ_TODO: GOAL(G) | ACHIEVED(a@) MISSED(m@)
 (setq org-todo-keywords
       '(
-        (sequence "REPEAT(r)" "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "WAIT(w@/!)" "DELEGATED(e@/!)" "GOAL(o)"
+        (sequence "REPEAT(r)" "TODO(t)" "NEXT(n)" "DOING(i)" "SOMEDAY(s)" "WAIT(w@/!)" "DELEGATED(e@/!)" "GOAL(o)"
                   "|"
                   "DONE(d!)" "CANCELLED(c@/!)" "STUCK(k)"
                   "ACHIEVED(a@)" "MISSED(m@)")
@@ -569,32 +569,33 @@ This function makes sure that dates are aligned for easy reading."
    ;; (setq org-super-agenda-header-prefix "☯ ") ;; https://symbl.cc/en/262F/
    (setq org-super-agenda-header-prefix "⚛ ") ;; https://symbl.cc/en/269B/
    (setq org-agenda-custom-commands
-	 '(("v" "Super view"
-	    ((agenda ""
+	     '(("v" "Super view"
+	        ((agenda ""
                      ((org-agenda-span 'day)
-		      (org-super-agenda-groups
-		       '((:name "Today "
-				:time-grid t
-				:date today
-				:todo "TODAY"
-				:scheduled today
-				:order 1)))))
+		              (org-super-agenda-groups
+		               '((:name "Today "
+				                :time-grid t
+				                :date today
+				                :todo "TODAY"
+				                :scheduled today
+				                :order 1)))))
              
-	     (alltodo ""
+	         (alltodo ""
                       ((org-agenda-overriding-header "Category View")
-		       (org-super-agenda-groups
-			'(
+		               (org-super-agenda-groups
+			            '(
                           (:name "Key results " :category "kr")
-			  (:name "Next to do " :todo "NEXT")
+                          (:name "Doing " :todo "DOING")
+			              (:name "Next to do " :todo "NEXT")
                           (:name "Habit " :habit t)
-			  (:name "Due Soon "   :deadline future)
-			  (:name "Delegated "  :todo "DELEGATED")
+			              (:name "Due Soon "   :deadline future)
+			              (:name "Delegated "  :todo "DELEGATED")
                           (:name "Wait "       :todo "WAIT"
                                  :face (:foreground "gray60"))
-			  (:name "Someday "    :todo "SOMEDAY"
+			              (:name "Someday "    :todo "SOMEDAY"
                                  :face (:foreground "gray60"))
                           (:auto-category)
-			  ))))
+			              ))))
              (alltodo ""
                       ((org-agenda-overriding-header "OKR View")
                        (org-super-agenda-groups
@@ -619,6 +620,7 @@ This function makes sure that dates are aligned for easy reading."
 (defun eye/close-agenda ()
   "close agenda tab"
   (interactive)
+  (delete-other-windows)
   (org-agenda-quit)
   (if (fboundp 'tab-bar-close-tab-by-name)
       (tab-bar-close-tab-by-name "MyAgenda"))
