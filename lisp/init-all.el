@@ -313,7 +313,11 @@
 (eye/use-package
  'yasnippet
  :load-path "yasnippet"
- :command '(yas-global-mode))
+ :ensure t
+ :command '(yas-global-mode)
+ :config (progn
+           (yas-global-mode)
+           ))
 
 ;;;; lsp-bridge
 (eye/use-package
@@ -423,8 +427,8 @@
 (require 'init-cpp)
 
 
-(run-with-idle-timer 2 nil (lambda () (require 'init-tramp)))
-(run-with-idle-timer 2 nil (lambda () (require 'init-magit)))
+;; (run-with-idle-timer 2 nil (lambda () (require 'init-tramp)))
+;; (run-with-idle-timer 2 nil (lambda () (require 'init-magit)))
 
 ;;;; bing-dict
 (eye/use-package
@@ -435,9 +439,9 @@
 ;;;; theme
 (require 'init-theme)
 
-(require 'init-holo-layer)
+;; (require 'init-holo-layer)
 (require 'init-org)
-(require 'init-denote)
+;; (require 'init-denote)
 
 
 (eye/use-package
