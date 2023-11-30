@@ -23,9 +23,12 @@
 
 (defun eye-after-load-theme-setup (theme)
   (message "setup after load theme")
+  ;; https://www.tusij.com/color/palette
   ;; (set-face-attribute 'mode-line nil :background (face-attribute 'default :background))
   ;; (set-face-attribute 'tab-bar-tab nil :foreground "gray80" :background  "SkyBlue4")
   ;; (set-face-attribute 'tab-bar-tab-inactive nil)
+  ;; (set-face-attribute 'default nil :background "#073642")
+  (set-face-attribute 'default nil :background "#062329")
   (if (eye-current-theme-is-dark)
       (progn
         (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
@@ -40,6 +43,16 @@
 
 (require 'init-modeline) ;; 先加载modeline配置，如果放到load theme之后，modeline会没有背景颜色
 
+;; (eye/use-package 'naysayer
+;;                  :ensure nil
+;;                  :load-path "naysayer-theme.el"
+;;                  :init
+;;                  (progn
+;;                    (add-to-list 'custom-theme-load-path (concat eye-packages-dir "/naysayer-theme.el"))
+;;                    (add-hook 'after-init-hook (lambda ()
+;;                                                 (load-theme 'naysayer t)))
+;;                    ))
+
 (eye/use-package
  'ef-themes
  :load-path '("ef-themes")
@@ -49,12 +62,12 @@
    (add-to-list 'custom-theme-load-path (concat eye-packages-dir "/ef-themes"))
    (defun eye-load-startup-theme ()
      (if is-gui
-         ;; (load-theme 'ef-melissa-dark t)
-         (let* ((hh (string-to-int (format-time-string "%H" (current-time)))))
-           (if (or (>= hh 17) (<= hh 6))
-               (load-theme 'ef-elea-dark t)
-             (load-theme 'ef-elea-light t)
-             ))
+         (load-theme 'ef-trio-dark t)
+         ;; (let* ((hh (string-to-int (format-time-string "%H" (current-time)))))
+         ;;   (if (or (>= hh 17) (<= hh 6))
+         ;;       (load-theme 'ef-elea-dark t)
+         ;;     (load-theme 'ef-elea-light t)
+         ;;     ))
        (load-theme 'wombat t))
      )
    (add-hook 'after-init-hook #'eye-load-startup-theme)

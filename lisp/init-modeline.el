@@ -38,8 +38,8 @@
   ;; (setq-default mode-line-format nil)
   ;; (setq-default header-line-format nil)
   (setq-default mode-line-format "") ;; 清除空白，如果使用nil，则完全隐藏modeline
-  (set-face-attribute 'mode-line nil :height 0.1 :background "#7f5ab6")
-  (set-face-attribute 'mode-line-inactive nil :height 0.1)
+  (set-face-attribute 'mode-line nil :height 0.1 :background "#004f8c");;"#853910");;"#358594");;"7f5ab6")
+  (set-face-attribute 'mode-line-inactive nil :height 0.1 :background "grey20")
   )
 
 (add-hook 'after-init-hook #'eye-mode-line-setup)
