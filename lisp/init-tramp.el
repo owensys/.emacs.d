@@ -18,10 +18,10 @@
 
 
 ;; https://stackoverflow.com/questions/22972621/how-to-use-sshpass-when-loging-in-to-remote-server-with-emacs-tramp
-;; (require 'auth-source) ;; 会自动加载，输入密码后询问是否保存
-;; (setq auth-source-debug t)
+(require 'auth-source) ;; 会自动加载，输入密码后询问是否保存
+(setq auth-source-debug t)
 ;; machine melancholia port scp login daniel password geheim
-;; (setq auth-sources '("~/.authinfo"))
+(setq auth-sources '("~/.authinfo"))
 
 ;; test open
 ;; (setq default-process-coding-system '(utf-8-dos . cp936))
