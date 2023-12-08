@@ -113,7 +113,7 @@ inst "ivy-yasnippet" "https://github.com/mkcms/ivy-yasnippet.git" "83402d9"
 inst "json-mode" "https://github.com/joshwnj/json-mode.git" "eedb456"
 inst "json-snatcher" "https://github.com/Sterlingg/json-snatcher.git" "b28d1c0"
 inst "keyfreq" "https://github.com/dacap/keyfreq.git" "dd88193"
-inst "lsp-bridge" "https://github.com/manateelazycat/lsp-bridge" "e9ff0"
+inst "lsp-bridge" "https://github.com/manateelazycat/lsp-bridge" "86740"
 inst "lua-mode" "https://github.com/immerrr/lua-mode.git" "ad639c6"
 inst "magit" "https://github.com/magit/magit.git" "5d91aad"
 inst "magit-popup" "https://github.com/magit/magit-popup.git" "d8585fa"
@@ -152,7 +152,7 @@ inst "smex" "https://github.com/nonsequitur/smex.git" "55aaebe"
 inst "super-save" "https://github.com/bbatsov/super-save.git" "6f6512b"
 #inst "swiper" "https://github.com/abo-abo/swiper.git" "d28225e"
 git clone -b owen https://github.com/owensys/swiper swiper-self
-inst "symbol-overlay" "https://github.com/wolray/symbol-overlay.git" "72ff963"
+inst "symbol-overlay" "https://github.com/wolray/symbol-overlay.git" "029c6"
 # Emacs-Lisp Library for converting S-expressions to TOML
 inst "tomelr" "https://github.com/kaushalmodi/tomelr.git" "670e0a0" #Needed by ox-hugo
 inst "transient" "https://github.com/magit/transient.git" "b412784"
