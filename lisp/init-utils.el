@@ -832,10 +832,18 @@ Version 2017-01-29"
     (set-buffer-process-coding-system 'utf-8 'utf-8)
     ))
 
-(defun run-cmdexe-in-emacs ()
+(defun run-cmd-in-emacs ()
   (interactive)
   (let ((shell-file-name "C:/Windows/SysWOW64/cmd.exe"))
     (shell "*cmd.exe*")))
+
+(defun run-cmd-in-external ()
+  (interactive)
+  ;; if want to aotu run some command, add /K xxx.bat, like this:
+  ;; (start-process "cmd" nil "C:\\Windows\\System32\\cmd.exe" "/C" "start" "cmd.exe" "/K" "d:\\test.bat")
+  (let ((proc (start-process "cmd" nil "C:\\Windows\\System32\\cmd.exe" "/C" "start" "cmd.exe")))
+    (set-process-query-on-exit-flag proc nil))
+  )
 
 
 (defun run-bash-here ()
