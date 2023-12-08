@@ -199,6 +199,16 @@
 
 ;; 窗口透明
 (when is-gui
+  ;; (progn ;; transparency
+  ;;   (if (<= emacs-major-version 28)
+  ;;       (progn
+  ;;         (set-frame-parameter (selected-frame) 'alpha '(45 . 50))
+  ;;         (add-to-list 'default-frame-alist '(alpha . (45 . 50)))
+  ;;         )
+  ;;     (progn
+  ;;       (set-frame-parameter nil 'alpha-background 45) ; For current frame
+  ;;       (add-to-list 'default-frame-alist '(alpha-background . 45)) ; For all new frames henceforth
+  ;;       )))
   ;; Let the desktop background show through
   (defvar cur-is-transparent nil)
   (defun eye/switch-transparent ()
@@ -231,6 +241,10 @@
 ;; 自动保存书签
 (require 'bookmark)
 (add-hook 'kill-emacs-hook #'bookmark-save)
+
+
+;; 禁止点击minibuffer时弹出message buffer
+(define-key minibuffer-inactive-mode-map [mouse-1] #'ignore)
 
 
 (provide 'init-misc)
