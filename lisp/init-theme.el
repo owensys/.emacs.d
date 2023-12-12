@@ -25,9 +25,9 @@
   (message "setup after load theme")
   ;; https://www.tusij.com/color/palette
   ;; (set-face-attribute 'mode-line nil :background (face-attribute 'default :background))
-  (set-face-attribute 'tab-bar nil :background  "gray90")
-  (set-face-attribute 'tab-bar-tab nil :background  "#4a699c" :box '(:line-width -2 :color "#4a699c"))
-  (set-face-attribute 'tab-bar-tab-inactive nil :background  "#aeb0b4" :box '(:line-width -2 :color "#aeb0b4"))
+  ;; (set-face-attribute 'tab-bar nil :background  "#e3e8ee")
+  (set-face-attribute 'tab-bar-tab nil :background  "#e3e8ee" :box '(:line-width -2 :color "#e3e8ee") :foreground "gray50")
+  (set-face-attribute 'tab-bar-tab-inactive nil :background  "#d7dde9" :box '(:line-width -2 :color "#d7dde9"))
   ;; (set-face-attribute 'default nil :background "#073642")
   (set-face-attribute 'default nil :background "#e5e9f0")
   (if (eye-current-theme-is-dark)
