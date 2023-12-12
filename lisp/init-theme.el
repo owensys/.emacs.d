@@ -25,10 +25,11 @@
   (message "setup after load theme")
   ;; https://www.tusij.com/color/palette
   ;; (set-face-attribute 'mode-line nil :background (face-attribute 'default :background))
-  ;; (set-face-attribute 'tab-bar-tab nil :foreground "gray80" :background  "SkyBlue4")
-  ;; (set-face-attribute 'tab-bar-tab-inactive nil)
+  (set-face-attribute 'tab-bar nil :background  "gray90")
+  (set-face-attribute 'tab-bar-tab nil :background  "#4a699c" :box '(:line-width -2 :color "#4a699c"))
+  (set-face-attribute 'tab-bar-tab-inactive nil :background  "#aeb0b4" :box '(:line-width -2 :color "#aeb0b4"))
   ;; (set-face-attribute 'default nil :background "#073642")
-  (set-face-attribute 'default nil :background "#062329")
+  (set-face-attribute 'default nil :background "#e5e9f0")
   (if (eye-current-theme-is-dark)
       (progn
         (set-face-attribute 'font-lock-comment-face nil :foreground "tan3")
@@ -53,6 +54,8 @@
 ;;                                                 (load-theme 'naysayer t)))
 ;;                    ))
 
+(require 'init-tab-bar)
+
 (eye/use-package
  'ef-themes
  :load-path '("ef-themes")
@@ -62,7 +65,7 @@
    (add-to-list 'custom-theme-load-path (concat eye-packages-dir "/ef-themes"))
    (defun eye-load-startup-theme ()
      (if is-gui
-         (load-theme 'ef-trio-dark t)
+         (load-theme 'ef-elea-light t)
          ;; (let* ((hh (string-to-int (format-time-string "%H" (current-time)))))
          ;;   (if (or (>= hh 17) (<= hh 6))
          ;;       (load-theme 'ef-elea-dark t)
