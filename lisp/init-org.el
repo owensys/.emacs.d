@@ -672,6 +672,14 @@ This function makes sure that dates are aligned for easy reading."
      ))
   )
 
+(eye/use-package
+ 'org-tidy
+ :load-path "org-tidy"
+ :ensure t
+ :config
+ (progn
+   (add-hook 'org-mode-hook #'org-tidy-mode)
+   ))
 
 (provide 'init-org)
 
