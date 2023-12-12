@@ -93,7 +93,7 @@ It has the ability to preview the bookmarks like `swiper-all'."
                               (switch-to-buffer (overlay-buffer bookmark))
                               (bm-goto bookmark)))
 
-                  :update-fn #'counsel-bm-update-input
+                  :update-fn nil ;; #'counsel-bm-update-input
 
                   :initial-input initial-input
                   :caller 'counsel-bm
