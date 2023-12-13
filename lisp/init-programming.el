@@ -330,4 +330,22 @@ If buffer-or-name is nil return current buffer's mode."
  )
 
 
+(eye/use-package
+ 'citre
+ :ensure t
+ :load-path "citre"
+ :config
+ (progn
+   (require 'citre-config)
+   ))
+
+
+(eye/use-package
+ 'puni
+ :ensure t
+ :load-path "puni"
+ )
+
+
+
 (provide 'init-programming)
