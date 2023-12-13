@@ -171,7 +171,9 @@
  :config
  (progn
    (set-face-attribute 'color-rg-font-lock-match nil :foreground "dark green")
-   (setq color-rg-search-ignore-rules "-g \"!*.dat\" -g \"!#*\" -g \"!*~\"  -g \"!TAGS\"") ;; 注意，必须用双引号，否则搜索结果为空
+   ;; ignore files, 注意，必须用双引号，否则搜索结果为空
+   (setq color-rg-search-ignore-rules
+         "-g \"!*.dat\" -g \"!#*\" -g \"!*~\" -g \"!TAGS\" -g \"!tags\"")
    (defun eye-setup-color-rg-mode ()
      (toggle-truncate-lines 1))
    (add-hook 'color-rg-mode-hook #'eye-setup-color-rg-mode)
