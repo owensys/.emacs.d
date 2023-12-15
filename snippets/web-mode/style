@@ -3,7 +3,5 @@
 # key: style
 # --
 <style>
-$0
-h1 {
-}
+  $0
 </style>
