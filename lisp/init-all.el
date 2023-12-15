@@ -171,6 +171,11 @@
  :config
  (progn
    (set-face-attribute 'color-rg-font-lock-match nil :foreground "dark green")
+   (set-face-attribute 'color-rg-font-lock-function-location nil :foreground "gray30")
+   (set-face-attribute 'color-rg-font-lock-header-line-edit-mode nil :foreground "gray30")
+   (set-face-attribute 'color-rg-font-lock-header-line-keyword nil :foreground "gray30")
+   (set-face-attribute 'color-rg-font-lock-command nil :foreground "gray80")
+   ;; (set-face-attribute 'color-rg-font-lock-command nil :foreground (face-background 'default)) ;; hide command
    ;; ignore files, 注意，必须用双引号，否则搜索结果为空
    (setq color-rg-search-ignore-rules
          "-g \"!*.dat\" -g \"!#*\" -g \"!*~\" -g \"!TAGS\" -g \"!tags\"")
