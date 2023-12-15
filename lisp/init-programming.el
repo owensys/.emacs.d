@@ -332,7 +332,7 @@ If buffer-or-name is nil return current buffer's mode."
 
 (eye/use-package
  'citre
- :ensure t
+ :ensure nil
  :load-path "citre"
  :config
  (progn
