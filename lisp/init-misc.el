@@ -177,15 +177,15 @@
 
 
 (when is-gui
-  ;; (setq-default cursor-type '(bar . 1))
-  ;; (setq cursor-type '(bar . 1))
-  ;; (set-cursor-color "#FF3300")
-
+  (setq-default cursor-type '(box . 2))
+  (setq cursor-type '(box . 2))
+  (set-cursor-color "dark red")
+  (setq blink-cursor-interval 0.7) ;; 闪烁频率
+  (setq blink-cursor-delay 5) ;; 多久后光标开始闪烁
+  (blink-cursor-mode 1)
   ;;(blink-cursor-mode -1) ;; 取消光标闪烁
-
-  (setq-default cursor-type '(bar . 2))
-  (setq cursor-type '(bar . 2))
-  
+  ;; (setq-default cursor-type '(bar . 2))
+  ;; (setq cursor-type '(bar . 2))
   )
 ;; (when is-gui
 ;; (add-hook 'after-init-hook
