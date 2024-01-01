@@ -535,11 +535,13 @@ This function makes sure that dates are aligned for easy reading."
 	    monthname day dayname)))
 
 
+(setq org-agenda-hide-tags-regexp ".*") ;; 隐藏所有tag
 (setq org-agenda-breadcrumbs-separator " ❱ "
       org-agenda-current-time-string "⏰ ┈┈┈┈┈┈┈┈┈┈┈ now"
-      org-agenda-time-grid '((weekly today require-timed)
-                             (800 1000 1200 1400 1600 1800 2000)
-                             "---" "┈┈┈┈┈┈┈┈┈┈┈┈┈")
+      org-agenda-time-grid '((daily) () "" "") ;; 隐藏time grid
+      ;; org-agenda-time-grid '((weekly today require-timed)
+      ;;                        (800 1000 1200 1400 1600 1800 2000)
+      ;;                        "---" "┈┈┈┈┈┈┈┈┈┈┈┈┈")
       org-agenda-prefix-format '((agenda . "%i %-12:c%?-12t%b% s")  ;; 显示breadcrumbs
                                  (todo . " %i %-12:c")
                                  (tags . " %i %-12:c")

@@ -46,15 +46,14 @@
        (f-mkdir org-roam-directory))
    
    ;; 忽略目录, daily notes内容不删除，但不放到org-roam中
-   ;; (setq org-roam-file-exclude-regexp
-   ;; (concat "^" (expand-file-name org-roam-directory) "/journals/"))
-   (setq org-roam-file-exclude-regexp nil)
+   (setq org-roam-file-exclude-regexp "journals/")
+   ;; (setq org-roam-file-exclude-regexp nil)
 
    ;; 1.add date
    ;; 2.support select directory, see https://github.com/org-roam/org-roam/issues/888
    ;;   example, tip dir and input: books/, will be create note in sub dir.
    (setq org-roam-capture-templates '(("d" "default" plain "%?" :target
-                                      (file+head "${dir}%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: \n- tags :: \n")
+                                      (file+head "${dir}%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+tags: \n")
                                       :unnarrowed t)
                                       ))
 
