@@ -1204,6 +1204,10 @@ The optional argument NEW-WINDOW is not used."
       )))
 
 
+(defun eye/show-svn-list-create-command ()
+  (interactive)
+  (message "svn -R list > .svn-file-list"))
+
 
 (defun eye/open-project-file ()
   (interactive)
