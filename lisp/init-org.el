@@ -680,6 +680,7 @@ This function makes sure that dates are aligned for easy reading."
  :ensure t
  :config
  (progn
+   (setq org-tidy-protect-overlay nil)
    (add-hook 'org-mode-hook #'org-tidy-mode)
    ))
 
