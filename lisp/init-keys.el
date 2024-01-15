@@ -70,8 +70,9 @@
 (defun eye-set-keys (modemap)
   ;; quick key setup
   (bind-key modemap "<f1>" #'my-switch-buffer)
-  (bind-key modemap "<f5>" #'revert-buffer)
-  (bind-key modemap "<f3>" #'goto-line)
+  (bind-key modemap "<f2>" #'swiper)
+  (bind-key modemap "<f3>" #'eye-search-in-dir)
+  (bind-key modemap "<f4>" #'goto-line)
   (bind-key modemap "<f5>" #'revert-buffer)
   (bind-key modemap "<f6>" 'eye/org-add-sibling-headline)
   (bind-key modemap "<f7>" 'eye/org-add-child-headline)
