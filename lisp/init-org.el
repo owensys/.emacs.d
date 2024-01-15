@@ -117,6 +117,7 @@
 	("\\.rar\\'" . system)
 	("\\.x?html?\\'" . system)
 	("\\.pdf\\'" . system)
+	("\\.epub\\'" . system)
 	("\\.png\\'" . system)
 	("\\.jpg\\'" . system)
 	("\\.jpeg\\'" . system)
@@ -580,7 +581,8 @@ This function makes sure that dates are aligned for easy reading."
 				                :date today
 				                :todo "TODAY"
 				                :scheduled today
-				                :order 1)))))
+				                :order 1
+                                :discard (:todo "DELEGATED"))))))
              
 	         (alltodo ""
                       ((org-agenda-overriding-header "Category View")
@@ -591,20 +593,30 @@ This function makes sure that dates are aligned for easy reading."
 			              (:name "Next to do " :todo "NEXT")
                           (:name "Habit " :habit t)
 			              (:name "Due Soon "   :deadline future)
-			              (:name "Delegated "  :todo "DELEGATED")
+			              ;; (:name "Delegated "  :todo "DELEGATED")
                           (:name "Wait "       :todo "WAIT"
                                  :face (:foreground "gray60"))
 			              (:name "Someday "    :todo "SOMEDAY"
                                  :face (:foreground "gray60"))
+                          ;; other people task do not show here block
+                          (:discard (:todo "DELEGATED"))
                           (:auto-category)
 			              ))))
+             ;; (alltodo ""
+             ;;          ((org-agenda-overriding-header "OKR View")
+             ;;           (org-super-agenda-groups
+             ;;            '(
+             ;;              (:auto-property "AREA")
+             ;;              (:auto-category)
+             ;;              ))))
              (alltodo ""
-                      ((org-agenda-overriding-header "OKR View")
+                      ((org-agenda-overriding-header "Delegated Tasks")
                        (org-super-agenda-groups
                         '(
-                          (:auto-property "AREA")
-                          (:auto-category)
-                          ))))
+                          (:auto-property "DELEGATED")
+                          (:discard (:not (:todo "DELEGATED")))
+                          )))
+                      )
              ))))
    
    ))
