@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: build
+# key: build
+# --
+Widget build(BuildContext context) {
+
+}
