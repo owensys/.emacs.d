@@ -10,8 +10,7 @@
 ;;
 
 (if is-windows (setq cn-font-name "更纱黑体 Mono SC Nerd") (setq cn-font-name "Inconsolata"))
-
-(setq en-font-name "Courier New")
+(setq en-font-name (if is-windows "Courier New" "Ubuntu Mono"))
 
 (setq en-font-size 14 cn-font-size 14)
 ;; (setq en-font-size 16 cn-font-size 14)
