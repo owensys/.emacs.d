@@ -69,7 +69,7 @@ title 链接库关系图
   "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
   (interactive
    (let ((src-code-types
-	  '("c" "c++" "shell" "emacs-lisp" "java" "lisp" "mytex" "quote" "python" "js" "clojure" "css"
+	  '("c" "c++" "shell" "emacs-lisp" "java" "lisp" "dart" "mytex" "quote" "python" "js" "clojure" "css"
 	    "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
 	    "octave" "oz" "plantuml" "mindmap" "R" "sass" "screen" "sql" "awk" "ditaa"
 	    "haskell" "latex" "matlab" "ocaml" "org" "perl" "ruby"

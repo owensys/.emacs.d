@@ -208,9 +208,13 @@
   (eye-bind-ctrl-key modemap "dct" 'goto-line)
   ;;(wkey "C-d C-c" "code navigate")
 
-  (eye-bind-ctrl-key modemap "dsd" 'lsp-bridge-find-def)
-  (eye-bind-ctrl-key modemap "dsq" 'lsp-bridge-find-def-return)
-  (eye-bind-ctrl-key modemap "dsr" 'lsp-bridge-find-references)
+  (eye-bind-ctrl-key modemap "dsa" 'lsp-bridge-find-def)
+  (eye-bind-ctrl-key modemap "dsb" 'lsp-bridge-find-def-other-window)
+  (eye-bind-ctrl-key modemap "dsc" 'lsp-bridge-find-def-return)
+  (eye-bind-ctrl-key modemap "dsd" 'lsp-bridge-find-references)
+  (eye-bind-ctrl-key modemap "dse" 'lsp-bridge-popup-documentation)
+  (eye-bind-ctrl-key modemap "dsf" 'lsp-bridge-restart-process)
+  (eye-bind-ctrl-key modemap "dsh" 'lsp-bridge-kill-process)
   ;;(wkey "C-d C-s" "lsp-bridge")
 
   (eye-bind-ctrl-key modemap "dom" 'outline-minor-mode)
