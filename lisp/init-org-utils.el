@@ -878,9 +878,7 @@ locale-notebook-dir use absolute path for advise.
       (setq basename (file-name-base relpath))
       (setq will-open-filepath relpath)
       ;; (message "copy %s" will-open-filepath)
-      (setq target-dir "d:/tmp");
-      (if (y-or-n-p "复制到指定目录？")
-          (setq target-dir (read-string "Target dir: ")))
+      (setq target-dir (read-string "Copy to dir: " "d:/tmp"))
       (if (not (f-directory-p target-dir))
           (f-mkdir target-dir))
 
