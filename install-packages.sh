@@ -183,8 +183,9 @@ inst "popper" "https://github.com/karthink/popper.git" "a93ff3"
 inst "holo-layer" "https://github.com/manateelazycat/holo-layer" "94ba9"
 inst "blink-search" "https://github.com/manateelazycat/blink-search.git" "b57dc3"
 inst "treesit-auto" "https://github.com/renzmann/treesit-auto.git" "bac3b9"
-inst "org-tidy" "https://github.com/jxq0/org-tidy.git" "07a8f9"
 inst "puni" "https://github.com/AmaiKinono/puni.git" "518a53"
+inst "org-tidy" "https://github.com/jxq0/org-tidy" "7f0720"
+
 
 
 echo "All package install finished."
