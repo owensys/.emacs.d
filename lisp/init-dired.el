@@ -68,6 +68,7 @@
    )
   )
 
+(setq dired-free-space nil) ;; 不显示目录后面的空间信息
 
 (defun eye-dired-setup ()
   ;; 默认递归操作文件夹
