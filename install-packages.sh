@@ -17,6 +17,9 @@ function inst()
         fi
     fi
 
+    if [[ $3 == "" ]]; then
+        return
+    fi
 
     pushd $1 > /dev/null
     deps=10
@@ -36,9 +39,9 @@ function inst()
             deps=$(($deps + 10))
         fi
     done
-
+    
     git checkout $3 > /dev/null
-
+        
     # check log commit
     output=$(git log --oneline -1)
     if [[ $output =~ $3 ]]; then
