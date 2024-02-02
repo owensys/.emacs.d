@@ -17,7 +17,8 @@
          (note-dir (ivy-read "Select note directory: " dir-list))
          )
     (run-hook-with-args 'notebook-before-open-hook note-dir)
-    (find-file (expand-file-name "index.org" note-dir))
+    ;; (find-file (expand-file-name "index.org" note-dir))
+    (dired note-dir)
     (run-hook-with-args 'notebook-after-open-hook note-dir)
     (message "opened notebook:%s" note-dir)
     ))
@@ -695,6 +696,7 @@ This function makes sure that dates are aligned for easy reading."
    (setq org-tidy-protect-overlay nil)
    (add-hook 'org-mode-hook #'org-tidy-mode)
    ))
+
 
 (provide 'init-org)
 
