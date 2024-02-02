@@ -331,6 +331,7 @@
  'lsp-bridge
  :load-path '("lsp-bridge" "posframe" "markdown-mode" "yasnippet")
  :command '(lsp-bridge-mode global-lsp-bridge-mode)
+ :ensure t
  :config
  (progn
    (require 'yasnippet)
@@ -439,8 +440,8 @@
                  :config
                  (progn
                    (add-to-list 'auto-mode-alist '("\\.dart\\'" . dart-mode))
-                   )
-                 )
+                   ))
+
 
 ;; (run-with-idle-timer 2 nil (lambda () (require 'init-tramp)))
 ;; (run-with-idle-timer 2 nil (lambda () (require 'init-magit)))

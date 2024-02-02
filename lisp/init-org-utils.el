@@ -69,7 +69,7 @@ title 链接库关系图
   "Insert a `SRC-CODE-TYPE' type source code block in org-mode."
   (interactive
    (let ((src-code-types
-	  '("c" "c++" "shell" "emacs-lisp" "java" "lisp" "mytex" "quote" "python" "js" "clojure" "css"
+	  '("c" "c++" "shell" "emacs-lisp" "java" "lisp" "dart" "mytex" "quote" "python" "js" "clojure" "css"
 	    "calc" "asymptote" "dot" "gnuplot" "ledger" "lilypond" "mscgen"
 	    "octave" "oz" "plantuml" "mindmap" "R" "sass" "screen" "sql" "awk" "ditaa"
 	    "haskell" "latex" "matlab" "ocaml" "org" "perl" "ruby"
@@ -878,9 +878,7 @@ locale-notebook-dir use absolute path for advise.
       (setq basename (file-name-base relpath))
       (setq will-open-filepath relpath)
       ;; (message "copy %s" will-open-filepath)
-      (setq target-dir "d:/tmp");
-      (if (y-or-n-p "复制到指定目录？")
-          (setq target-dir (read-string "Target dir: ")))
+      (setq target-dir (read-string "Copy to dir: " "d:/tmp"))
       (if (not (f-directory-p target-dir))
           (f-mkdir target-dir))
 

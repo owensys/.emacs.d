@@ -2,6 +2,9 @@
 
 ;; (require 'dired)
 
+(setq dired-free-space nil)
+
+
 
 (defun eye/dirtree-show ()
   (interactive)
@@ -54,8 +57,6 @@
 ;;   "hide the file's unix owner and permission info"
 ;;   ;; 分组
 ;;   ;; (setopt dired-listing-switches "-alGhv --group-directories-first")
-;;   ;; (dired-hide-details-mode 1)		;隐藏以.开头的文件
-;;   ;; (dired-omit-mode 1)			;隐藏.和..本身 @see https://stackoverflow.com/questions/43628315/how-to-hide-one-dot-current-directory-in-dired-mode
 ;;   )
 
 
@@ -77,6 +78,10 @@
   ;; 拷贝,如果其他窗口也为dired mode，会以其为目标路径拷贝文件。
   (setq dired-dwim-target t)
   (add-hook 'dired-after-readin-hook 'custom-dired-sort-dir-first)
+
+  (dired-hide-details-mode 1)		;隐藏以.开头的文件
+  (dired-omit-mode 1)			;隐藏.和..本身 @see https://stackoverflow.com/questions/43628315/how-to-hide-one-dot-current-directory-in-dired-mode
+  
   
   (require 'wdired)
   (require 'dired-x) ;; 支持 dired-jump 进入后自动定位到当前文件名位置
@@ -92,6 +97,7 @@
 
   )
 
+(add-hook 'dired-mode-hook 'eye-dired-setup)
 
 
 ;; (define-key dired-mode-map (kbd "RET") 'dired-find-file-other-window)
